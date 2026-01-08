@@ -1,0 +1,49 @@
+`https://itch.io/t/644401/calculated-ratings-for-jams-vs-raw-scores`  
+  
+ https://github.com/JamBrain/JamBrain/issues/1972 
+  
+ https://github.com/JamBrain/JamBrain/issues/1752 
+  
+ `https://github.com/JamBrain/JamBrain/issues/990`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/1891`  
+  
+ `https://itch.io/t/1488292/jam-ratings-calculation-issue`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/1131`  
+  
+ https://ldjam.com/events/ludum-dare/rules 
+  
+ `https://itch.io/jam/coco-code-gamejam-1/topic/4569793/how-does-the-rating-system-of-itchio-work`  
+  
+ `https://itch.io/jam/coco-code-gamejam-1/topic/4569793/how-does-the-rating-system-of-itchio-work`  
+  
+ `https://itch.io/t/1488292/jam-ratings-calculation-issue`  
+  
+ `https://itch.io/jam/cgj/topic/549203/the-ranking-system`  
+  
+ `https://www.reddit.com/r/gamedev/comments/1f0etrz/so_how_do_they_judge_the_gmtk_game_jam_fairly/`  
+  
+ `https://itch.io/t/1298987/replace-the-score-penalty-for-game-jam-entries-with-too-few-ratings`  
+  
+ https://github.com/JamBrain/JamBrain/issues/1748 
+  
+ https://github.com/JamBrain/JamBrain/issues/1726 
+  
+ `https://github.com/JamBrain/JamBrain/issues/1503`  
+  
+ https://github.com/JamBrain/JamBrain/issues/986 
+  
+ `https://github.com/JamBrain/JamBrain/issues/1010`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/119`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/954`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/971`  
+  
+ `https://github.com/JamBrain/JamBrain/issues/967`  
+  
+ [[WriteMe] Judging Guide · Issue #887 · JamBrain/JamBrain · GitHub](https://github.com/JamBrain/JamBrain/issues/887) 
+  
+ `https://itch.io/jam/gmtk-2019/topic/531516/json-export-of-jam-results-results-discussion`

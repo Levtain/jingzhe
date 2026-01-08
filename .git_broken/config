@@ -1,0 +1,16 @@
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = false
+	logallrefupdates = true
+	symlinks = false
+	ignorecase = true
+	autocrlf = false
+	safecrlf = false
+	eol = lf
+[user]
+	email = jingzhe-project@example.com
+	name = 惊蛰计划项目组
+[remote "origin"]
+	url = https://github.com/Levtain/jingzhe.git
+	fetch = +refs/heads/*:refs/remotes/origin/*

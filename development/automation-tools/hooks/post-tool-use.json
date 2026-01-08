@@ -1,0 +1,17 @@
+{
+  "description": "PostToolUse Hook - 文档修改提醒和自动记录。在Write/Edit工具执行后自动触发,提醒需要同步的文档,记录修改到agent-memory",
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "检测到刚刚使用了Write或Edit工具修改文件。请分析并执行以下操作:\n\n1. **识别文件类型**:\n   - 判断修改的是否是以下类型:\n     * 问题清单文件 (*questions.md)\n     * 设计文档 (docs/design/*.md)\n     * CHANGELOG.md\n     * claude.md\n     * 开发日志 (dev-log-*.md)\n     * 其他文档\n\n2. **生成提醒消息** (根据文件类型):\n\n   **如果修改了问题清单**:\n   ```\n   ⚠️ 检测到修改问题清单\n   \n   提醒: 请记得同步到设计文档\n   - 检查哪些问题的答案已确认\n   - 更新对应设计文档的章节\n   - 运行 /sync-docs 自动同步\n   ```\n\n   **如果修改了设计文档**:\n   ```\n   ⚠️ 检测到修改设计文档\n   \n   提醒: 请记得更新以下文档:\n   - CHANGELOG.md (记录变更)\n   - 相关问题清单 (如有)\n   - 交叉引用 (如影响其他文档)\n   ```\n\n   **如果修改了CHANGELOG版本号**:\n   ```\n   ⚠️ 检测到修改CHANGELOG版本号\n   \n   提醒: 请记得同步版本号到:\n   - claude.md (版本号)\n   - 设计文档 (如有版本号)\n   ```\n\n   **如果修改了其他文档**:\n   ```\n   ℹ️ 文档已修改\n   \n   建议: 检查是否需要:\n   - 更新相关文档的交叉引用\n   - 记录到CHANGELOG (如果是重要变更)\n   - 创建开发日志条目\n   ```\n\n3. **记录到agent-memory** (自动执行):\n   提取以下信息并保存到 `.claude/skills/agent-memory/agent-memory/memories/changes/`:\n   \n   ```markdown\n   ---\n   summary: \"修改了{文件名} - {简要描述变更}\"\n   created: {当前日期}\n   tags: [文档修改, {文件类型}]\n   related: [{修改的文件路径}]\n   ---\n   \n   # 文档修改记录\n   \n   **文件**: {文件路径}\n   **时间**: {时间戳}\n   **操作**: Write/Edit\n   \n   **变更摘要**:\n   {从tool_result中提取关键变更}\n   \n   **建议后续操作**:\n   - [根据文件类型列出建议]\n   ```\n\n4. **输出格式**:\n   如果有提醒,输出提醒消息。\n   如果保存了memory,简单说明\"✅ 已记录到agent-memory\"。\n   如果两者都有,先输出提醒,再说明记录保存。\n   \n   **重要**: 提醒要简洁明了,不要每次都输出冗长的说明。只在有重要提醒时才输出。",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

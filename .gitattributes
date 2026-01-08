@@ -1,0 +1,29 @@
+* text=auto eol=lf
+*.txt text
+*.md text
+*.py text
+*.js text
+*.json text
+*.html text
+*.css text
+*.java text
+*.c text
+*.cpp text
+*.h text
+*.xml text
+*.yml text
+*.yaml text
+*.toml text
+*.ini text
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.jpg binary
+*.png binary
+*.gif binary
+*.pdf binary
+*.zip binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary

@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(ls:*)",
+      "Bash(test:*)",
+      "Bash(cat:*)",
+      "Bash(tasklist:*)",
+      "Bash(taskkill:*)"
+    ]
+  }
+}
