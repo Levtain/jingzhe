@@ -40,7 +40,8 @@
       "Bash(xargs:*)",
       "Bash(git hash-object:*)",
       "Bash(robocopy:*)",
-      "Bash(git rev-list:*)"
+      "Bash(git rev-list:*)",
+      "Bash(python:*)"
     ],
     "deny": [],
     "ask": []
