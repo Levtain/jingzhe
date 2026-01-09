@@ -43,7 +43,9 @@
       "Bash(git rev-list:*)",
       "Bash(python:*)",
       "Skill(docs-write)",
-      "Skill(docs-write:*)"
+      "Skill(docs-write:*)",
+      "Skill(discuss)",
+      "Skill(discuss:*)"
     ],
     "deny": [],
     "ask": []
