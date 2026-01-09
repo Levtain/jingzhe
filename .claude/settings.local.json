@@ -41,7 +41,9 @@
       "Bash(git hash-object:*)",
       "Bash(robocopy:*)",
       "Bash(git rev-list:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Skill(docs-write)",
+      "Skill(docs-write:*)"
     ],
     "deny": [],
     "ask": []
