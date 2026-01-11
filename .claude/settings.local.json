@@ -45,7 +45,8 @@
       "Skill(docs-write)",
       "Skill(docs-write:*)",
       "Skill(discuss)",
-      "Skill(discuss:*)"
+      "Skill(discuss:*)",
+      "Bash(find:*)"
     ],
     "deny": [],
     "ask": []
