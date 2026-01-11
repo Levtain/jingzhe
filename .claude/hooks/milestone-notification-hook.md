@@ -56,9 +56,69 @@
   - 创建的文件
 ```
 
-### 3. 推荐下一步操作
+### 3. Windows系统通知 🔔
 
-**推荐逻辑**:
+**通知方式**:
+```yaml
+方式1: Windows Toast通知
+  - 使用PowerShell的BurntToast模块
+  - 或使用Windows API
+  - 在右下角弹出通知
+  - 包含标题和内容
+
+方式2: 系统音效
+  - 使用Windows系统音效
+  - 播放提示音
+  - 可配置音效类型
+
+方式3: 终端内通知
+  - Markdown格式通知
+  - 彩色输出
+  - 清晰的视觉提示
+```
+
+**Windows通知实现**:
+```python
+def show_windows_notification(title, message):
+    """
+    显示Windows系统通知
+    """
+    try:
+        # 方法1: 使用PowerShell的BurntToast
+        ps_command = f'''
+        New-BurntToastNotification -Text "{title}", "{message}"
+        '''
+        subprocess.run(["powershell", "-Command", ps_command])
+
+        # 方法2: 使用Windows API (fallback)
+        # 或者使用plyer库的notification功能
+
+    except Exception as e:
+        # 如果Windows通知失败,回退到终端输出
+        print(f"🔔 {title}: {message}")
+
+def play_notification_sound(sound_type="milestone"):
+    """
+    播放通知音效
+    """
+    sound_files = {
+        "milestone": "C:\\Windows\\Media\\notify.wav",
+        "achievement": "C:\\Windows\\Media\\tada.wav",
+        "warning": "C:\\Windows\\Media\\Windows Exclamation.wav",
+        "error": "C:\\Windows\\Media\\Windows Error.wav"
+    }
+
+    sound_file = sound_files.get(sound_type, sound_files["milestone"])
+
+    try:
+        import winsound
+        winsound.PlaySound(sound_file, winsound.SND_FILENAME)
+    except:
+        # Fallback: 系统铃声
+        print('\a')  # ASCII bell character
+```
+
+### 4. 推荐下一步操作
 ```python
 def recommend_next_actions(milestone_type, current_state):
     """
@@ -187,6 +247,14 @@ def generate_questions_completed_notification(milestone):
     module = milestone["module"]
     completion = milestone["completion"]
 
+    # Windows通知
+    show_windows_notification(
+        "🎉 里程碑达成!",
+        f"{module} 问题讨论 100%完成!"
+    )
+    play_notification_sound("achievement")
+
+    # 终端通知
     notification = f"""🎉 **里程碑达成: 问题讨论完成!**
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -511,10 +579,92 @@ def complete_discussion(question_list_file):
       ],
       "show_recommendations": true,
       "show_statistics": true,
-      "track_notifications": true
+      "track_notifications": true,
+      "windows_notification": {
+        "enabled": true,
+        "use_toast": true,
+        "use_sound": true,
+        "sound_type": "achievement",
+        "fallback_to_terminal": true
+      }
     }
   }
 }
+```
+
+### 通知配置说明
+
+```yaml
+windows_notification:
+  enabled:
+    - true: 启用Windows系统通知
+    - false: 仅使用终端通知
+
+  use_toast:
+    - true: 使用Windows Toast通知(右下角弹出)
+    - false: 不使用Toast通知
+
+  use_sound:
+    - true: 播放音效
+    - false: 静音
+
+  sound_type:
+    - milestone: 普通里程碑音效
+    - achievement: 成就解锁音效(tada.wav)
+    - warning: 警告音效
+    - error: 错误音效
+
+  fallback_to_terminal:
+    - true: Windows通知失败时回退到终端输出
+    - false: 仅Windows通知,失败则不显示
+```
+
+### 音效文件路径
+
+```yaml
+Windows系统音效位置:
+  C:\Windows\Media\
+
+可选音效:
+  - notify.wav: 普通通知
+  - tada.wav: 成就解锁(推荐用于里程碑)
+  - Windows Exclamation.wav: 警告
+  - Windows Error.wav: 错误
+  - chimes.wav: 提示
+  - ringout.wav: 电话铃声
+```
+
+### PowerShell BurntToast安装
+
+```powershell
+# 如果需要使用Toast通知,需要安装BurntToast模块
+# 以管理员身份运行PowerShell:
+
+Install-Module -Name BurntToast -Force
+
+# 或使用:
+Install-Module -Name BurntToast -Scope CurrentUser
+```
+
+### 简化版通知(无需安装模块)
+
+如果不希望安装PowerShell模块,可以使用Windows自带的通知API:
+
+```python
+def show_windows_notification_simple(title, message):
+    """
+    简化版Windows通知(无需额外模块)
+    """
+    try:
+        # 使用Windows API通过VBScript
+        vb_script = f'''
+        Set objShell = CreateObject("WScript.Shell")
+        objShell.Popup "{message}", 0, "{title}", 64
+        '''
+        subprocess.run(["cscript", "//NoLogo", "//B"], input=vb_script, text=True)
+    except:
+        # 最终回退: 终端输出
+        print(f"🔔 {title}: {message}")
 ```
 
 ---
@@ -548,24 +698,38 @@ def complete_discussion(question_list_file):
 **核心功能**:
 1. 检测里程碑完成
 2. 生成完成通知
-3. 推荐下一步操作
-4. 增强用户体验
+3. **Windows系统通知(右下角Toast + 音效)** 🔔
+4. 推荐下一步操作
+5. 增强用户体验
 
 **核心价值**:
 - 清晰的下一步指引
 - 不会遗漏重要步骤
 - 实时进度可视化
 - 提升成就感
+- **不会被错过!** (Windows通知 + 音效)
 
 **实施建议**:
 - 通知内容简洁明了
 - 推荐操作优先级清晰
 - 与其他Hook良好配合
 - 记录通知历史
+- **启用Windows通知和音效**(防止错过)
+
+**快速启用**:
+```json
+{
+  "windows_notification": {
+    "enabled": true,
+    "use_sound": true,
+    "sound_type": "achievement"
+  }
+}
+```
 
 ---
 
 **创建时间**: 2025-01-11
-**版本**: v1.0
-**状态**: ✅ Hook已定义
-**下一步**: 集成到相关Agent中
+**版本**: v1.1
+**状态**: ✅ Hook已更新(添加Windows通知)
+**下一步**: 集成到相关Agent中,启用Windows通知
