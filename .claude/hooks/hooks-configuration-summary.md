@@ -1,12 +1,47 @@
 # Hooks系统配置总结
 
 > **更新时间**: 2025-01-11
-> **版本**: v1.0
+> **版本**: v1.1
 > **目的**: 所有已创建的Hook配置和使用说明
 
 ---
 
 ## 📋 Hook清单
+
+### ✅ 已创建的Hook (5个)
+
+| Hook名称 | 优先级 | 状态 | 触发时机 |
+|---------|--------|------|---------|
+| **hook-manager** | 🔴 P0 | ✅ 已实现 | Hook系统核心 |
+| **daily-push-agent** | 🔴 P0 | ✅ 已实现 | 每天22:00 + 手动 |
+| **agent-completion-archive-hook** | 🟡 P1 | ✅ 已定义 | Agent完成时 |
+| **auto-doc-sync-hook** | 🟡 P1 | ✅ 已定义 | 问题100%完成时 |
+| **milestone-notification-hook** | 🟢 P2 | ✅ 已定义(含Windows通知) | 里程碑达成时 |
+| **doc-quality-monitor-hook** | 🟢 P2 | ✅ 已定义 | 文档保存/提交时 |
+
+### 🔧 Hook管理器
+
+**文件**: [.claude/hooks/hook-manager.md](hook-manager.md)
+
+**功能**:
+- 自动加载所有Hook
+- 统一的触发接口
+- Hook配置管理
+- Hook执行路由
+- Windows通知和音效支持
+
+**使用**:
+```python
+from .claude.hooks.hook_manager import hook_manager
+
+# 触发Hook
+hook_manager.trigger("milestone_notification", {
+    "type": "questions_completed",
+    "module": "游戏提交系统"
+})
+```
+
+---
 
 ### ✅ 已创建的Hook (5个)
 
@@ -325,6 +360,144 @@ development/archive/completion-reports/
 
 ---
 
+## 🔧 新Hook注册流程
+
+### 完整流程 (从创建到集成)
+
+当需要创建新的Hook时,按照以下步骤进行:
+
+```yaml
+步骤1: 创建Hook文档
+  文件: .claude/hooks/my-new-hook.md
+  内容:
+    - Hook名称和版本
+    - 功能描述
+    - 触发条件
+    - 核心逻辑
+    - 配置选项
+
+步骤2: 在Hook管理器中注册
+  文件: .claude/hooks/hook-manager.md
+  操作:
+    1. 在HookManager类中添加execute_my_new_hook()方法
+    2. 在execute_hook()方法中添加路由:
+       elif hook_name == "my_new_hook":
+           return self.execute_my_new_hook(data)
+
+步骤3: 更新Hook配置
+  文件: .claude/hooks/hook-config.json
+  操作:
+    "hooks": {
+      "my-new-hook": {
+        "enabled": true,
+        # ... 其他配置
+      }
+    }
+
+步骤4: 集成到Agent/Skill
+  参考文档:
+    - .claude/agents/hook-integration-guide.md
+    - .claude/commands/hook-integration-guide.md
+
+  操作:
+    1. 在Agent/Skill中导入Hook管理器
+    2. 在适当的时机调用hook_manager.trigger()
+    3. 添加Hook集成说明文档
+
+步骤5: 测试Hook
+  手动测试:
+    1. 创建测试数据
+    2. 手动触发Hook
+    3. 验证执行结果
+    4. 检查Windows通知/音效(如适用)
+
+步骤6: 更新文档
+  更新文件:
+    - 本文档 (添加新Hook到清单)
+    - hooks-configuration-summary.md
+    - 相关Agent/Skill的使用指南
+```
+
+### Hook注册示例
+
+**示例: 创建新的Hook - backup-reminder-hook**
+
+```yaml
+步骤1: 创建Hook文档
+  文件: .claude/hooks/backup-reminder-hook.md
+  内容: 备份提醒Hook的功能和实现
+
+步骤2: 在Hook管理器中注册
+  编辑: .claude/hooks/hook-manager.md
+
+  添加execute方法:
+    def execute_backup_reminder(self, data):
+        """执行备份提醒Hook"""
+        hours_since_backup = data.get("hours_since_backup")
+
+        if hours_since_backup > 24:
+            # Windows通知
+            self.show_windows_notification(
+                "💾 备份提醒",
+                f"已超过{hours_since_backup}小时未备份,建议立即备份"
+            )
+
+            # 播放音效
+            self.play_notification_sound("warning")
+
+            return {"status": "reminded"}
+
+  添加路由:
+    elif hook_name == "backup_reminder":
+        return self.execute_backup_reminder(data)
+
+步骤3: 更新配置
+  编辑: .claude/hooks/hook-config.json
+
+  添加:
+    "backup-reminder": {
+      "enabled": true,
+      "reminder_interval_hours": 24
+    }
+
+步骤4: 集成到Agent
+  在workflow-orchestrator-agent中:
+
+    def check_backup_status():
+        """检查备份状态"""
+        hours = get_hours_since_last_backup()
+
+        if hours > 24:
+            hook_manager.trigger("backup_reminder", {
+                "hours_since_backup": hours
+            })
+
+步骤5: 测试
+    手动触发测试Hook功能
+
+步骤6: 更新文档
+    在本文档中添加新Hook的说明
+```
+
+### Hook命名规范
+
+```yaml
+格式: {功能}-{类型}-hook
+
+示例:
+  - milestone-notification-hook ✅
+  - auto-doc-sync-hook ✅
+  - backup-reminder-hook ✅
+
+命名建议:
+  - 使用小写字母
+  - 使用连字符分隔单词
+  - 以-hook.md结尾
+  - 名称清晰描述功能
+```
+
+---
+
 ## 🎯 下一步行动
 
 ### 立即行动
@@ -410,8 +583,9 @@ development/archive/completion-reports/
 
 ## ✅ 总结
 
-**已创建的Hook**: 5个
-**已实施**: 1个 (daily-push-agent)
+**已创建的Hook**: 6个
+**已实施**: 2个 (hook-manager, daily-push-agent)
+**已集成**: discussion-agent
 **已定义**: 4个
 
 **核心价值**:
@@ -419,15 +593,30 @@ development/archive/completion-reports/
 - 📊 进度可视化
 - ✅ 质量保证
 - 🎯 智能推荐
+- 🔔 Windows通知 + 音效
+- 📦 统一Hook管理
 
 **实施建议**:
 - 优先集成P1级别的Hook
-- 逐步完善P2级别的Hook
-- 建立Hook管理机制
-- 持续优化配合流程
+- 完善Hook管理器功能
+- 集成到更多Agent/Skill
+- 测试Windows通知和音效
+- 根据反馈持续优化
+
+**新Hook注册**:
+- 参考"新Hook注册流程"章节
+- 遵循Hook命名规范
+- 在Hook管理器中注册
+- 集成到相关Agent/Skill
+- 测试并更新文档
 
 ---
 
 **更新时间**: 2025-01-11
-**版本**: v1.0
-**状态**: ✅ 所有Hook已定义
+**版本**: v1.1
+**状态**: ✅ Hook系统已完善
+**包含内容**:
+- Hook管理器
+- Hook集成指南(Agent/Skill)
+- Windows通知支持
+- 新Hook注册流程

@@ -35,6 +35,7 @@ You are the Discussion Agent, specializing in facilitating smooth, continuous qu
 5. Automatically mark the question as confirmed (✅)
 6. Ask if the user wants to continue to the next question
 7. Maintain discussion flow without manual command invocation
+8. **🔔 Integrate with Hook Manager: Trigger hooks when milestones are reached**
 
 **Design Philosophy:**
 - **Reduce friction**: User should only focus on answering questions, not managing the workflow
@@ -333,13 +334,18 @@ Display confirmation:
 
 When all questions are answered:
 
-```markdown
-🎉 **恭喜! 所有问题已确认完成!**
+```python
+def handle_completion(module_name, file_path, total_questions, round_stats):
+    """
+    处理讨论完成
+    """
+    # 显示完成信息
+    completion_message = f"""🎉 **恭喜! 所有问题已确认完成!**
 
 **模块**: {module_name}
 **问题清单**: {file_path}
 **总问题数**: {total_questions}个
-**完成时间**: {timestamp}
+**完成时间**: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -348,10 +354,7 @@ When all questions are answered:
 - ⏳ 待确认: 0个问题
 
 **各轮次统计**:
-- 第一轮 (核心逻辑): {round1_count}个 ✅
-- 第二轮 (细节机制): {round2_count}个 ✅
-- 第三轮 (风控边界): {round3_count}个 ✅
-- 第四轮 (后续优化): {round4_count}个 ✅
+{format_round_stats(round_stats)}
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
@@ -364,6 +367,85 @@ When all questions are answered:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **恭喜完成本轮讨论!** 🎉
+"""
+
+    print(completion_message)
+
+    # 🔔 集成Hook管理器: 触发里程碑通知
+    from .claude.hooks.hook_manager import hook_manager
+
+    hook_manager.trigger("milestone_notification", {
+        "type": "questions_completed",
+        "module": module_name,
+        "completion": {
+            "total": total_questions,
+            "confirmed": total_questions,
+            "completion_rate": 100
+        },
+        "file": file_path
+    })
+
+    # 🔔 集成Hook管理器: 触发自动文档同步
+    hook_manager.trigger("auto_doc_sync", {
+        "file": file_path,
+        "module": module_name,
+        "auto_sync": True
+    })
+```
+
+### Hook集成说明
+
+**何时触发Hook**:
+
+1. **milestone_notification Hook** (问题100%完成时)
+   ```python
+   hook_manager.trigger("milestone_notification", {
+       "type": "questions_completed",
+       "module": module_name,
+       "completion": {...}
+   })
+   ```
+   **效果**:
+   - 🎉 Windows通知(右下角弹窗)
+   - 🎵 播放成就解锁音效(tada.wav)
+   - 📋 显示完成统计
+   - 🎯 推荐下一步操作
+
+2. **auto_doc_sync Hook** (问题100%完成时)
+   ```python
+   hook_manager.trigger("auto_doc_sync", {
+       "file": file_path,
+       "module": module_name,
+       "auto_sync": True
+   })
+   ```
+   **效果**:
+   - 自动同步所有决策到设计文档
+   - 更新CHANGELOG
+   - 同步版本号
+   - 创建开发日志
+
+**Hook调用位置**:
+- 所有问题确认完成后 (`handle_completion` 函数中)
+- 在显示完成信息之后立即触发
+
+**Hook配置**:
+```json
+{
+  "hooks": {
+    "milestone-notification": {
+      "enabled": true,
+      "windows_notification": {
+        "enabled": true,
+        "use_sound": true
+      }
+    },
+    "auto-doc-sync": {
+      "enabled": true,
+      "auto_sync": true
+    }
+  }
+}
 ```
 
 ## Edge Case Handling
