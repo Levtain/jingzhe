@@ -28,6 +28,8 @@ def run_command(cmd):
             shell=True,
             capture_output=True,
             text=True,
+            encoding='utf-8',
+            errors='ignore',
             timeout=30
         )
         return result.returncode, result.stdout.strip(), result.stderr.strip()
@@ -191,5 +193,8 @@ def auto_commit():
     }
 
 if __name__ == "__main__":
+    import sys
     result = auto_commit()
+    # 使用UTF-8编码输出
+    sys.stdout.reconfigure(encoding='utf-8')
     print(json.dumps(result, ensure_ascii=False, indent=2))
