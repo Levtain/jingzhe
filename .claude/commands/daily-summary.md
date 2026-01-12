@@ -1,3 +1,9 @@
+---
+description: 手动触发每日总结生成,查看今日工作进度和下一步计划
+argument-hint: [--detailed | --save | --show-log]
+allowed-tools: Read, Grep, Bash
+---
+
 # 每日总结命令
 
 > **命令名称**: /daily-summary

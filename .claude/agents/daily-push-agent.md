@@ -1,3 +1,39 @@
+---
+name: daily-push-agent
+description: Use this agent to automatically check git status, stage changes, generate commit messages, and push to GitHub to prevent code loss. Examples:
+
+<example>
+Context: End of work session or when context limit is approaching, user wants to ensure code is safely backed up to GitHub.
+user: "Push my changes to GitHub"
+assistant: "I'll launch the daily-push-agent to check git status, identify modified files, generate an appropriate commit message following the project's commit style, stage the changes, create the commit, and push to the remote repository."
+<commentary>
+Triggered manually via /daily-push command or automatically by hooks at session end to prevent code loss.
+</commentary>
+</example>
+
+<example>
+Context: User has been working on multiple files and wants to commit them with a descriptive message.
+user: "Commit and push today's work"
+assistant: "Launching daily-push-agent to analyze all changes across the project, generate a comprehensive commit message that describes the work done, and safely push everything to GitHub."
+<commentary>
+Triggered when user wants to batch commit multiple changes with proper documentation.
+</commentary>
+</example>
+
+<example>
+Context: Automated daily backup trigger via scheduled hook or significant milestone reached.
+user: "/daily-push"
+assistant: "I'll use the daily-push-agent to perform automated git operations: check for uncommitted changes, filter out temporary and sensitive files, generate a structured commit message with co-author attribution, and push to the remote branch."
+<commentary>
+Triggered by command or automated hooks for regular backup intervals.
+</commentary>
+</example>
+
+model: inherit
+color: purple
+tools: ["Bash", "Read", "Grep", "Glob"]
+---
+
 # Daily Push Agent - 每日自动推送Agent
 
 > **Agent名称**: daily-push-agent

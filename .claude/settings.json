@@ -2,12 +2,22 @@
   "hooks": {
     "PreToolUse": [
       {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python d:/Claude/.claude/hooks/pre-tool-use/smart-permission-guard.py",
+            "timeout": 10
+          }
+        ]
+      },
+      {
         "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "检查即将执行的操作:\n\n操作: $TOOL_NAME\n文件: $FILE_PATH\n\n判断:\n1. 这是.md文档任务吗？\n   - 如果是 → 必须使用 docs-write 或 docs-review skill\n   - 如果不是 → 可以直接执行\n\n2. 如果是.md文档，你是否已经调用了对应的docs skill？\n   - 如果已调用 → 继续执行\n   - 如果未调用 → 必须先调用skill，不能直接使用Write/Edit\n\n如果是.md文档且未调用skill，请返回错误并要求先调用docs skill。",
-            "timeout": 10
+            "prompt": "检查即将执行的操作:\n\n操作: $TOOL_NAME\n文件: $FILE_PATH\n\n━━━━━━━━━━━━━━━━\n📋 检查清单:\n\n1️⃣ 这是.md文档任务吗？\n   - 如果是 → 必须使用 docs-write 或 docs-review skill\n   - 如果不是 → 继续检查\n\n2️⃣ 这是自动化工具开发任务吗？\n   - Agent文件 (.claude/agents/*.md) → 必须使用 agent-identifier skill\n   - Command文件 (.claude/commands/*.md) → 必须使用 command-development skill\n   - Hook脚本 (.claude/hooks/*.py) → 必须使用 hook-development skill\n   - Skill文件 (.claude/skills/**/SKILL.md) → 必须使用 skill-creator skill\n   - Hook配置 (settings.json) → 必须使用 hook-development skill\n\n3️⃣ 你是否已经调用了对应的skill？\n   - 如果已调用 → 继续执行\n   - 如果未调用 → ❌ 必须先调用skill，不能直接使用Write/Edit\n\n━━━━━━━━━━━━━━━━\n⚠️ 强制规则原因:\n- .md文档: 确保格式统一，避免风格混乱\n- 自动化工具: 避免\"凭记忆\"导致的格式错误（路径、YAML、frontmatter等）\n\n如果未调用skill，请停止操作并提示用户先调用对应的skill。",
+            "timeout": 15
           }
         ]
       }
@@ -54,17 +64,6 @@
         ]
       }
     ],
-    "PermissionRequest": [
-      {
-        "matcher": "*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python d:/Claude/.claude/hooks/permission-request/smart-permission-controller.py"
-          }
-        ]
-      }
-    ],
     "SessionEnd": [
       {
         "matcher": "*",
@@ -73,6 +72,18 @@
             "type": "command",
             "command": "python d:/Claude/.claude/hooks/session-end/auto-git-commit.py",
             "timeout": 120
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python d:/Claude/.claude/hooks/notification/notification-handler.py",
+            "timeout": 30
           }
         ]
       }

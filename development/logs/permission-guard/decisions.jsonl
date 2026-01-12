@@ -1,0 +1,9 @@
+{"timestamp": "2026-01-12", "tool": "Read", "safe": true, "reason": "Read 是只读操作"}
+{"timestamp": "2026-01-12", "tool": "Write", "safe": true, "reason": "Markdown 文档编辑"}
+{"timestamp": "2026-01-12", "tool": "Write", "safe": true, "reason": "代码文件编辑: .py"}
+{"timestamp": "2026-01-12", "tool": "Bash", "safe": true, "reason": "安全命令: git"}
+{"timestamp": "2026-01-12", "tool": "Bash", "safe": true, "reason": "安全命令: npm"}
+{"timestamp": "2026-01-12", "tool": "Write", "safe": false, "reason": "危险文件类型: .env"}
+{"timestamp": "2026-01-12", "tool": "Bash", "safe": false, "reason": "检测到危险命令: rm -rf"}
+{"timestamp": "2026-01-12", "tool": "Write", "safe": false, "reason": "危险文件类型: .dll"}
+{"timestamp": "2026-01-12", "tool": "Bash", "safe": false, "reason": "检测到危险命令: git push --force"}

@@ -1,9 +1,37 @@
 ---
 name: memory-agent
-description: 上下文快照和决策记录的核心Agent,负责生成、保存和管理上下文记忆
-version: 1.0
-author: Claude & User
-created: 2025-01-12
+description: Use this agent to generate, save, and manage context snapshots and decision records. Examples:
+
+<example>
+Context: User wants to save the current session context before context limit is reached.
+user: "Save context snapshot"
+assistant: "I'll launch the memory-agent to capture the current session context including confirmed questions, progress overview, and recent decisions, then save it to both system and project memory locations."
+<commentary>
+Triggered when context is getting full or when important decisions need to be preserved.
+</commentary>
+</example>
+
+<example>
+Context: User has confirmed important design decisions and wants them recorded.
+user: "Save these decisions to memory"
+assistant: "Launching memory-agent to extract confirmed decisions from the questions and create a permanent decision record that can be referenced in future sessions."
+<commentary>
+Triggered after completing a module or confirming important design decisions.
+</commentary>
+</example>
+
+<example>
+Context: End of work session, user wants to preserve today's progress.
+user: "/save-context"
+assistant: "I'll use the memory-agent to generate a full context snapshot including today's achievements, current progress, and next steps for the next session."
+<commentary>
+Triggered manually via command or automatically by session-end hook.
+</commentary>
+</example>
+
+model: inherit
+color: green
+tools: ["Read", "Write", "Grep", "Glob"]
 ---
 
 # Memory Agent - 上下文记忆管理Agent

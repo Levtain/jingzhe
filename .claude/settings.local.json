@@ -67,7 +67,8 @@
       "Bash(git --unset https.proxy)",
       "Bash(netstat:*)",
       "Bash(grep:*)",
-      "Bash(git fetch:*)"
+      "Bash(git fetch:*)",
+      "Bash(echo:*)"
     ],
     "deny": [],
     "ask": []

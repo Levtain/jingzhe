@@ -4,6 +4,135 @@
 
 ---
 
+## v1.24 (2025-01-12) 🔐 智能权限控制系统
+
+### 重大改进：自动化权限管理
+
+**核心成果**：实现智能权限控制，自动允许安全操作，只拦截真正危险的操作
+
+### 新增功能
+
+#### 1. 智能权限控制 Hook
+- **脚本位置**: `.claude/hooks/pre-tool-use/smart-permission-guard.py`
+- **触发时机**: 每个工具调用前自动执行
+- **优先级**: **最高**（优先于所有其他检查）
+
+#### 2. 自动允许的操作 ✅
+
+**只读工具**:
+- Read, Glob, Grep, WebFetch, WebSearch
+
+**文档编辑**:
+- 所有 `.md` 文件
+
+**代码编辑**:
+- `.py`, `.js`, `.ts`, `.tsx`, `.json`, `.yaml` 等
+
+**安全命令**:
+- git, npm, pip, pytest, eslint, prettier 等
+
+**交互工具**:
+- AskUserQuestion, Task, TodoWrite, Skill
+
+#### 3. 拦截的危险操作 ❌
+
+**危险文件**:
+- `.env`, `.env.local`, `.key`, `.pem`, `.exe`, `.dll` 等
+
+**危险命令**:
+- `rm -rf`, `git push --force`, `drop`, `delete` 等
+
+**危险路径**:
+- `/etc/`, `C:\Windows\`, `.ssh/`, `.gnupg/` 等
+
+**系统操作**:
+- `sudo`, `format`, `diskpart` 等
+
+#### 4. Notification Hook
+- **脚本位置**: `.claude/hooks/notification/notification-handler.py`
+- **功能**: Windows 桌面通知 + 系统音效 + 日志记录
+- **依赖**: win10toast 库
+
+### 配置更新
+
+**settings.json**:
+```json
+"PreToolUse": [
+  {
+    "matcher": "*",  // 全局权限检查
+    "hooks": [{
+      "type": "command",
+      "command": "python d:/Claude/.claude/hooks/pre-tool-use/smart-permission-guard.py"
+    }]
+  },
+  {
+    "matcher": "Write|Edit",  // Skill使用检查
+    "hooks": [{ "type": "prompt", ... }]
+  }
+],
+"Notification": [
+  {
+    "matcher": "*",
+    "hooks": [{
+      "type": "command",
+      "command": "python d:/Claude/.claude/hooks/notification/notification-handler.py"
+    }]
+  }
+]
+```
+
+### 测试验证
+
+**测试结果**: 9/9 测试全部通过 ✅
+
+| 测试用例 | 预期 | 实际 |
+|---------|------|------|
+| Read 操作 | 允许 | ✅ |
+| Write .md 文件 | 允许 | ✅ |
+| Write .py 文件 | 允许 | ✅ |
+| Bash git 命令 | 允许 | ✅ |
+| Bash npm 命令 | 允许 | ✅ |
+| Write .env 文件 | 阻止 | ✅ |
+| Bash rm -rf | 阻止 | ✅ |
+| Write 到系统路径 | 阻止 | ✅ |
+| Git push --force | 阻止 | ✅ |
+
+### 日志记录
+
+**权限决策日志**:
+- `development/logs/permission-guard/permission-guard-YYYY-MM-DD.log`
+- `development/logs/permission-guard/decisions.jsonl`
+
+**通知日志**:
+- `development/logs/notification-hook/notification-YYYY-MM-DD.log`
+- `development/logs/notification-hook/notifications.jsonl`
+
+### 文档更新
+
+**claude.md**:
+- 添加"智能权限控制"章节（协作原则）
+- 更新 Hook 工具列表（10个 Hook）
+- 明确 PreToolUse Hook 执行顺序
+
+**创建文档**:
+- `.claude/hooks/notification/notification-hook-guide.md`
+
+### 影响和收益
+
+**减少打扰**:
+- 安全操作自动允许，无需频繁确认
+- 专注于工作，不被权限请求打断
+
+**提高安全性**:
+- 真正危险的操作会被拦截
+- 所有权限决策都有日志可查
+
+**改善体验**:
+- 桌面通知 + 音效提示
+- 清晰的权限决策日志
+
+---
+
 ## v1.20 (2025-01-12) 📁 项目结构重组优化
 
 ### 重大改进：文件结构重组与路径更新

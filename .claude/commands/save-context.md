@@ -1,7 +1,7 @@
 ---
-name: save-context
 description: 手动触发上下文快照保存,用于在重要节点主动保存当前状态
-version: 1.0
+argument-hint: [--decisions | --force | --message "备注"]
+allowed-tools: Read, Write, Grep
 ---
 
 # /save-context 命令

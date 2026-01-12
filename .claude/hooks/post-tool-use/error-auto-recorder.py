@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Error Auto Recorder - 自动错误检测和记录Hook
 """

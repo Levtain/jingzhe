@@ -1,28 +1,33 @@
 ---
 name: workflow-orchestrator-agent
-description: 协调所有Agent，管理项目工作流
+description: Use this agent to coordinate all agents and manage the project workflow intelligently by analyzing current state, identifying the current phase, and recommending next actions. Examples:
 
-**何时使用**:
-- 用户: "开始工作" / "接下来做什么" / "继续项目"
-- 需要分析当前状态
-- 需要推荐下一步行动
-- 需要协调多个Agent
+<example>
+Context: User starts a new session and asks what to work on next.
+user: "What should I work on today?"
+assistant: "I'll launch the workflow-orchestrator-agent to analyze the current project state by reading questions.md and claude.md, identify the current phase (design/development/review), check for blockers, and recommend the highest priority next action with an appropriate agent."
+<commentary>
+Triggered when user seeks guidance on what to do next or starts a new session.
+</commentary>
+</example>
 
-**核心职责**:
-1. 分析项目状态（读取questions.md、claude.md）
-2. 识别当前阶段（设计/开发/审查）
-3. 推荐下一步行动
-4. 自动启动合适的Agent
+<example>
+Context: User has completed a task and wants to continue with the next logical step.
+user: "Continue with the project"
+assistant: "Launching workflow-orchestrator-agent to assess current progress, update the project status, determine the next phase, and automatically launch the appropriate agent for the next task."
+<commentary>
+Triggered after task completion to maintain momentum and workflow continuity.
+</commentary>
+</example>
 
-**分析逻辑**:
-- 读取 questions.md → 统计进度
-- 读取 claude.md → 了解当前阶段
-- 检查 blockers → 识别阻碍
-- 推荐优先级最高的任务
-
-**可启动的Agent**:
-- design-discussion-agent (讨论设计问题)
-- 其他专业Agent
+<example>
+Context: User is unsure about project priorities or needs an overview of where things stand.
+user: "Show me the current project status"
+assistant: "I'll use the workflow-orchestrator-agent to generate a comprehensive status report: question completion rate, current phase, blockers identified, prioritized task list, and recommended agent for each pending item."
+<commentary>
+Triggered when user needs a project overview or status assessment.
+</commentary>
+</example>
 
 model: inherit
 color: blue

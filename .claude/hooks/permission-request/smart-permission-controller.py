@@ -193,6 +193,9 @@ def main():
         tool_name = input_data.get("tool_name", "")
         tool_input = input_data.get("tool_input", {})
 
+        # 调试日志
+        print(f"[PermissionRequest Hook] Called with tool_name={tool_name}, input={tool_input}", file=sys.stderr)
+
         if not tool_name:
             sys.exit(0)
 

@@ -1,6 +1,37 @@
 ---
-description: 自动化Git仓库管理Agent,负责每日备份、提交和推送
 name: git-automation-agent
+description: Use this agent for automated Git repository management including daily backups, commits, and pushing to GitHub. Examples:
+
+<example>
+Context: Daily backup trigger or session end, user wants to ensure all work is safely pushed to GitHub.
+user: "Perform daily git backup"
+assistant: "I'll launch the git-automation-agent to check for changes, stage modified files, generate a commit message following project conventions, and push to GitHub with verification."
+<commentary>
+Triggered by daily schedules, session end hooks, or manual request for regular backups.
+</commentary>
+</example>
+
+<example>
+Context: User has completed an important feature and wants to create a documented commit with a custom message.
+user: "Commit and push: completed user role system design"
+assistant: "Launching git-automation-agent to stage all changes, create a commit with the custom message '完成用户角色系统设计', add co-author attribution, and push to the remote repository."
+<commentary>
+Triggered when user wants to commit milestone work with descriptive documentation.
+</commentary>
+</example>
+
+<example>
+Context: Repository health check or troubleshooting git issues.
+user: "Check git repository health"
+assistant: "I'll use the git-automation-agent to perform repository integrity checks, verify remote sync status, check disk space, and identify any potential issues."
+<commentary>
+Triggered when user suspects git problems or wants to verify repository status.
+</commentary>
+</example>
+
+model: inherit
+color: purple
+tools: ["Bash", "Read", "Grep"]
 ---
 
 # Git自动化Agent
