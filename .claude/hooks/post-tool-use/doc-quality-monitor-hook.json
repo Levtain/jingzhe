@@ -1,0 +1,55 @@
+{
+  "description": "文档修改时自动检查质量（格式/完整性/引用/版本号）",
+  "enabled": true,
+  "trigger": {
+    "events": [
+      "post_tool_use"
+    ],
+    "tool_filters": [
+      "Edit",
+      "Write"
+    ],
+    "file_patterns": [
+      "docs/**/*.md",
+      "development/**/*.md",
+      ".claude/**/*.md"
+    ],
+    "condition": "文档文件被修改或创建"
+  },
+  "action": {
+    "type": "quality_check",
+    "check_on_save": true,
+    "check_before_commit": true
+  },
+  "config": {
+    "quality_threshold": 80,
+    "check_items": {
+      "required": [
+        "format_check",
+        "content_completeness",
+        "cross_references",
+        "version_consistency"
+      ],
+      "recommended": [
+        "naming_convention",
+        "code_examples",
+        "chart_references"
+      ],
+      "optional": [
+        "readability",
+        "consistency"
+      ]
+    },
+    "report_levels": [
+      "error",
+      "warning",
+      "suggestion"
+    ]
+  },
+  "notification": {
+    "on_error": "❌ 发现阻塞性问题，必须修复",
+    "on_warning": "⚠️ 发现建议修复的问题",
+    "on_suggestion": "💡 发现优化建议",
+    "show_summary": true
+  }
+}

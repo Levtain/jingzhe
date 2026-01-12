@@ -57,7 +57,7 @@ allowed-tools: Read, Grep, Bash
 
 ```bash
 查找文件:
-- development/issues/*questions.md
+- development/active/issues/*questions.md
 
 对每个问题清单:
 - 统计已确认问题(标记✅的)
@@ -207,7 +207,7 @@ allowed-tools: Read, Grep, Bash
 
 ━━━━━━━━━━━━━━━━
 
-🎯 评分系统设计 (development/issues/scoring-system-questions.md)
+🎯 评分系统设计 (development/active/issues/scoring-system-questions.md)
 
 ✅ 第一轮 - 核心逻辑 (8/8):
   ✅ Q1.1-Q1.8 全部确认
@@ -242,7 +242,7 @@ allowed-tools: Read, Grep, Bash
 ```markdown
 ⚠️ 未找到问题清单文件
 
-检查目录: development/issues/
+检查目录: development/active/issues/
 
 结果: 没有找到 *questions.md 文件
 

@@ -114,11 +114,21 @@ def main():
 
     if not file_path:
         # 不是文件操作,静默退出
+        output = {
+            "continue": True,
+            "suppressOutput": True
+        }
+        print(json.dumps(output))
         sys.exit(0)
 
     # 检查是否为重要变更
     if not is_significant_change(file_path, tool_name):
         # 小改动,不输出
+        output = {
+            "continue": True,
+            "suppressOutput": True
+        }
+        print(json.dumps(output))
         sys.exit(0)
 
     # 分析变更
@@ -126,19 +136,24 @@ def main():
     sync_recommendation = get_sync_recommendation(file_path)
     filename = os.path.basename(file_path)
 
-    # 输出提醒
-    print(f"\n{'='*60}")
-    print(f"📋 文档变更提醒")
-    print(f"{'='*60}")
-    print(f"📁 文件: {filename}")
-    print(f"📂 路径: {file_path}")
-    print(f"🔧 操作: {tool_name}")
-    print(f"📝 类型: {change_type}")
+    # 构建系统消息
+    system_message = f"""📋 文档变更提醒
+
+📁 文件: {filename}
+📂 路径: {file_path}
+🔧 操作: {tool_name}
+📝 类型: {change_type}"""
 
     if sync_recommendation != "无":
-        print(f"💡 建议: {sync_recommendation}")
+        system_message += f"\n💡 建议: {sync_recommendation}"
 
-    print(f"{'='*60}\n")
+    # 输出标准JSON格式
+    output = {
+        "continue": True,
+        "suppressOutput": False,
+        "systemMessage": system_message
+    }
+    print(json.dumps(output))
 
     sys.exit(0)
 

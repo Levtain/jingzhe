@@ -51,7 +51,7 @@ allowed-tools: Read, Grep, Bash, Skill
   优先级:
   1. .claude/commands/ 和 .claude/hooks/
   2. docs/design/
-  3. development/issues/
+  3. development/active/issues/
 ```
 
 ### 步骤2: 加载docs-review skill

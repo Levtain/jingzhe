@@ -193,7 +193,7 @@ def detect_milestone_completion():
     milestones = []
 
     # 检测1: 问题讨论完成
-    question_lists = glob("development/issues/*questions*.md")
+    question_lists = glob("development/active/issues/*questions*.md")
     for ql in question_lists:
         completion = check_question_completion(ql)
         if completion["is_complete"] and not is_notified(ql):
@@ -505,7 +505,7 @@ def complete_discussion(question_list_file):
 🎯 **推荐下一步操作**:
 
 🔴 **继续排名系统**
-   命令: `/discuss development/issues/ranking-system-questions.md`
+   命令: `/discuss development/active/issues/ranking-system-questions.md`
    原因: 完成度70%,即将完成
 
 🟡 **规划下一阶段**

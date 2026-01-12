@@ -1,0 +1,36 @@
+{
+  "description": "自动归档Agent完成报告并更新总体进度",
+  "enabled": true,
+  "trigger": {
+    "events": [
+      "post_tool_use"
+    ],
+    "tool_filters": [
+      "Write"
+    ],
+    "file_patterns": [
+      "development/testing/*completion-summary*.md",
+      "development/testing/*complete*.md",
+      "development/*完成报告*.md",
+      "development/*summary*.md"
+    ],
+    "condition": "检测到新的完成报告文件创建"
+  },
+  "action": {
+    "type": "archive",
+    "archive_location": "development/archive/completion-reports/",
+    "update_progress": true,
+    "create_index": true
+  },
+  "config": {
+    "auto_archive": true,
+    "update_progress": true,
+    "create_progress_file": true,
+    "progress_file": "development/progress/overall-progress.md"
+  },
+  "notification": {
+    "on_trigger": "📦 检测到新的完成报告，准备归档...",
+    "on_complete": "✅ 完成报告已归档！",
+    "show_details": true
+  }
+}

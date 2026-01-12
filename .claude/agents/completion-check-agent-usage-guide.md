@@ -72,8 +72,8 @@ completion-check-agent 是一个专门用于模块完整性验证的Agent,它能
 
 ✅ **存在的文档**:
 - ✅ 设计文档: docs/design/游戏提交系统设计文档_v1.0.md
-- ✅ 问题清单: development/issues/game-submission-questions-v2.md
-- ⚠️  决策记录: development/decisions/game-submission-decisions.md (不存在)
+- ✅ 问题清单: development/active/issues/game-submission-questions-v2.md
+- ⚠️  决策记录: development/workspace/drafts/decisions/game-submission-decisions.md (不存在)
 
 ❌ **缺失的文档**:
 - ❌ API文档: docs/api/game-submission-api.md (建议创建)
@@ -193,7 +193,7 @@ completion-check-agent 是一个专门用于模块完整性验证的Agent,它能
 ✅ **有效的引用**: 25个
 
 ❌ **失效的引用** (2个):
-- development/issues/questions.md:45 → [已归档文档](../archive/old.md)
+- development/active/issues/questions.md:45 → [已归档文档](../archive/old.md)
   → 文件已移动,应该引用: ../archive/scoring-system-discussion-2025-01-05.md
 
 - docs/design/system-design.md:78 → §5.2
@@ -224,7 +224,7 @@ completion-check-agent 是一个专门用于模块完整性验证的Agent,它能
 
 ✅ **存在的文档**:
 - ✅ 设计文档: docs/design/评分系统设计方案_v1.0.md
-- ✅ 问题清单: development/issues/scoring-system-questions.md
+- ✅ 问题清单: development/active/issues/scoring-system-questions.md
 - ✅ CHANGELOG: CHANGELOG.md
 - ⚠️  决策记录: (不存在,可选)
 

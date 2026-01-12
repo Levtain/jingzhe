@@ -19,8 +19,8 @@
   - 定期扫描(可选)
 
 监控范围:
-  - development/issues/*.md
-  - development/analysis/*.md
+  - development/active/issues/*.md
+  - development/active/analysis/*.md
   - docs/design/*.md
   - .claude/agents/*.md
   - .claude/commands/*.md
@@ -332,7 +332,7 @@ def calculate_quality_score(report):
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-**文件**: development/issues/game-submission-questions-v2.md
+**文件**: development/active/issues/game-submission-questions-v2.md
 **检查时间**: 2025-01-11 16:30:00
 
 📊 **质量得分**: 85/100

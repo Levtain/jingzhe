@@ -88,18 +88,24 @@ def main():
     if not version:
         version = "未知"
 
-    # 输出简洁摘要
-    print(f"\n{'='*60}")
-    print(f"🎯 惊蛰计划 v{version}")
-    print(f"{'='*60}")
-    print(f"📊 当前状态: {stage}")
-    print(f"🔧 可用命令:")
-    print(f"   /discuss     - 启动问题讨论")
-    print(f"   /sync-docs   - 同步所有文档")
-    print(f"   /check-progress - 检查项目进度")
-    print(f"{'='*60}")
-    print(f"✅ 准备就绪!")
-    print(f"{'='*60}\n")
+    # 构建系统消息
+    system_message = f"""{'='*60}
+🎯 惊蛰计划 v{version}
+{'='*60}
+📊 当前状态: {stage}
+💬 提示: 用自然语言交流即可，无需记住命令
+   例如: "看看进度"、"同步一下"、"今天先这样"
+{'='*60}
+✅ 准备就绪!
+{'='*60}"""
+
+    # 输出标准JSON格式
+    output = {
+        "continue": True,
+        "suppressOutput": False,
+        "systemMessage": system_message
+    }
+    print(json.dumps(output))
 
     sys.exit(0)
 

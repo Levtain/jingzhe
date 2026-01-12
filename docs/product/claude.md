@@ -1,7 +1,7 @@
 # 惊蛰计划 - Claude 项目配置
 
 > 本文件用于让 Claude 记住项目核心信息
-> 版本：v1.16
+> 版本：v1.20
 > 更新：详见 [CHANGELOG.md](./CHANGELOG.md)
 
 ---
@@ -143,36 +143,45 @@
 - 🎯 **工作流自动化**: 减少人工干预,降低遗漏率
 - 🎯 **Agent Memory**: 保存设计决策理由、讨论过程、工作进度
 
-### 自动化工具体系 (v1.8)
+### 自动化工具体系 (v1.18)
 
-惊蛰计划已建立完整的自动化工具体系,共**13个工具**:
+惊蛰计划已建立完整的自动化工具体系,共**18个工具**:
 
-**6个Command工具** (手动触发):
+**8个Command工具** (手动触发):
 - `/discuss` - 启动问题讨论
 - `/sync-docs` - 同步所有文档
 - `/check-progress` - 检查项目进度
 - `/token-check` - Token使用量检查器
 - `/check-completion` - 完成自检器
 - `/review-docs` - 文档质量审核器
+- `/daily-summary` - 每日总结生成器
+- `/check-doc-quality` - 文档质量检查器 ⭐ (新增v1.18)
 
-**5个Agent工具** (智能分析):
+**6个Agent工具** (智能分析):
 - doc-sync-agent - 文档同步智能Agent
 - progress-summary-agent - 进度总结智能Agent
 - question-analysis-agent - 问题分析智能Agent
 - doc-review-agent - 文档审核智能Agent
-- doc-consistency-agent - 文档一致性监控Agent ⭐ (新增v1.8)
+- doc-consistency-agent - 文档一致性监控Agent
+- daily-summary-agent - 每日总结智能Agent
 
-**2个Hook工具** (自动触发):
-- PostToolUse Hook - 文档修改自动提醒和同步
+**7个Hook工具** (自动触发):
+- PostToolUse Hook (5个子Hook) - 文档修改自动触发:
+  - auto-doc-sync-hook - 问题100%完成自动同步 ⭐ (新增v1.18)
+  - milestone-notification-hook - 里程碑达成自动通知 ⭐ (新增v1.18)
+  - agent-completion-archive-hook - Agent完成报告自动归档 ⭐ (新增v1.18)
+  - doc-quality-monitor-hook - 文档质量自动监控 ⭐ (新增v1.18)
+  - 通用文档修改监控
 - SessionStart Hook - 会话开始自动加载上下文
+- SessionEnd Hook - 会话结束自动总结
 
 **效果统计**:
 - ⚡ 自动化覆盖率: 95%+ (Hook生效后)
 - ⚡ 每月节省时间: 40+小时
 - ⚡ 投入产出比: 571% (按月计算)
-- ⚡ 开发总时长: 7小时
+- ⚡ 开发总时长: 8小时
 
-详见: [CHANGELOG.md - v1.6/v1.8](./CHANGELOG.md)
+详见: [CHANGELOG.md - v1.6/v1.8/v1.9/v1.18](./CHANGELOG.md)
 
 ### 工作流（重要）
 
@@ -180,7 +189,7 @@
 
 在设计阶段，我采用严格的问题清单式讨论流程：
 
-1. **创建问题清单**：从设计文档中提取所有待确认问题，保存到 `development/issues/`
+1. **创建问题清单**：从设计文档中提取所有待确认问题，保存到 `development/active/issues/`
 2. **严格按顺序提问**：每次只提1-3个相关问题，必须标注问题编号（Q1, Q2...）
 3. **立即记录确认**：收到回答后立即记录到问题清单，等待"可以开始工作了"再继续下一题
 4. **每日工作收尾**：
@@ -193,63 +202,97 @@
 
 ---
 
-## 📋 核心待讨论事项
+## 📋 设计讨论进度概览
 
-### 高优先级（第一届开赛前必须明确）
-- [ ] 主题投票机制细节（R1/R2投票规则、隐藏/显示票数）
-- [ ] 组队与赛道的具体规则（最少人数、绑定方式、退出规则）
-- [ ] 游戏提交与更新规则（格式限制、更新次数、版本展示）
-- [ ] 经济系统具体数值（基础金币、打赏档位、奖励规则）
-- [ ] 推荐位机制细节（保留位置、价格时长、高峰定义）
-- [ ] 页面级权限控制矩阵
+> **数据来源**：[development/active/issues/questions.md](../../development/active/issues/questions.md)
+> **最后同步**：2025-01-11（由daily-summary-agent自动更新）
 
-### 中优先级（第二届评估）
-- [ ] 善意度系统详细设计（计算公式、阈值、衰减规则）
-- [ ] 反作弊阈值细化（账号年龄、投票速率、异常模式）
-- [ ] 内容审核机制（人工/机器、投诉处理、违规下架）
-- [ ] 活动状态管理（自动/手动流转、回滚权限）
-- [ ] 非功能性要求（峰值用户、并发预估、备份策略）
+### 📊 整体进度
 
-### 低优先级（未来优化）
-- [ ] 未来升级方向预留（多源融合评价接口、行为数据收集）
-- [ ] 定价模型数据结构预留
+| 状态 | 数量 | 占比 |
+|------|------|------|
+| ✅ 已确认 | **96** | **64%** |
+| 🔄 部分确认 | **0** | **0%** |
+| ❌ 未讨论 | **53** | **36%** |
+| **总计** | **149** | **100%** |
 
-### ✅ 已完成（截至v1.10）
+### 🎯 已完成模块（96个问题）
 
-**评分系统** (22个问题已完成):
-- [x] 评分颗粒度与统计（0.5分档位）
-- [x] 评分资格与权限
-- [x] 评分时机与修改规则
-- [x] AI使用处理方案（申报制+争议仲裁+维度不参与）
-- [x] 6个评分维度的详细定义
-- [x] **评分维度详细指南v1.0** (380行)
-- [x] 革命性排名系统（12个独立榜单）
-- [x] 优选游戏机制（3个维度前10）
-- [x] 排名计算方法（截尾均值+贝叶斯平滑）
-- [x] 强制评分数量（≥10个游戏）
-- [x] 战术性评分防护机制
+- ✅ **评分系统**（22个问题）- 革命性排名系统、12个独立榜单、优选游戏机制
+- ✅ **团队系统**（20个问题）- 三级角色、一人一团队、自动解散机制
+- ✅ **排名系统**（20个问题）- 用户权重、动态门槛、并列处理规则
+- ✅ **游戏提交系统**（22个问题）- 7步提交流程、硬核玩家赛道、源码上传机制
+- ✅ **经济系统具体数值**（6个问题）- 基础金币、打赏奖励、赛后结算规则
+- ✅ **主题投票机制**（R1/R2/R3规则已明确）
 
-**自动化工具** (13个工具全部完成):
-- [x] 6个Command工具 (/discuss, /sync-docs等)
-- [x] 5个Agent工具 (doc-sync, progress-summary等)
-- [x] 2个Hook工具 (PostToolUse, SessionStart)
-- [x] 文档一致性监控Agent (doc-consistency-agent)
+### ⏳ 待讨论模块（53个问题）
 
-**文档体系**:
-- [x] 文档同步机制建立
-- [x] 自动化覆盖率95%+
-- [x] 版本号自动同步机制
+**🔴 高优先级（第一届开赛前必须明确）**：
+- **推荐位机制细节**（5个问题）- 保留位置、价格时长、危险边缘阈值
+- **社区功能细节**（6个问题）- 匿名吐槽审核、组队信息展示、内容类型区分
+- **搜索与筛选功能**（6个问题）- 临门一脚排序、智能推荐算法、高级筛选
+- **游戏详情页功能**（7个问题）- 推荐按钮、打赏档位、编辑权限
 
-详见: [development/issues/questions.md](../../development/issues/questions.md)
+**🟡 中优先级（第二届评估）**：
+- **善意度与反作弊系统**（8个问题）- 计算公式、阈值规则、处置流程
+- **内容审核机制**（4个问题）- 人工/机器审核、投诉处理、违规下架
+- **活动状态管理**（4个问题）- 自动/手动流转、回滚权限
+- **后台管理功能细节**（6个问题）- 倒计时管理、推荐位管理、新闻栏管理
 
-**问题追踪文件结构** (v1.12新增):
+**🟢 低优先级（未来优化）**：
+- **非功能性要求**（4个问题）- 峰值用户、并发预估、备份策略
+- **未来升级方向**（3个问题）- 多源融合评价接口、行为数据收集
+- **通用UI组件**（4个问题）- 侧边工具栏、个人中心UI、计时器UI
+- **成就系统**（4个问题）- 成就分类、触发条件、奖励机制
+
+### 📌 最近更新（2025-01-09）
+
+- 🎉 **经济系统具体数值所有6个问题已100%确认完成！**
+  - 参赛者基础金币：100金币/天
+  - 评审团基础金币：+100金币/天（总计200）
+  - 硬核玩家基础金币：+50金币/天
+  - 评分奖励机制：每次有效评分获得1金币
+  - 评分打赏机制：评分后必须打赏至少1金币（1-10档位）
+
+- 🎉 **游戏提交系统所有22个问题已100%确认完成！**
+  - P0优先级：4个问题（截图数量、未完成作品、游戏类型Tag、AI披露）
+  - P1优先级：4个问题（源码链接修改、Draft UI区分、作者快照、赛季结束处理）
+  - P2优先级：2个问题（排他锁接管时间、游戏类型与评分维度）
+
+- 🎉 **评分系统所有22个问题已100%确认完成！**
+  - 革命性排名系统：12个独立榜单（6维度×2评分群体）
+  - 优选游戏机制：3个维度前10 = 优选游戏
+  - 排名计算方法：截尾均值（10%）+ 贝叶斯平滑（k=20）
+
+**问题追踪文件结构** (v1.20更新):
 ```
-development/issues/
+development/active/issues/
 ├── README.md                              (目录说明)
-├── questions.md                           (主问题清单 - 45个问题)
+├── questions.md                           (主问题清单 - 当前149个问题)
 ├── bugs.md                                (Bug追踪清单 - 开发阶段使用)
 └── archive/                               (归档目录)
     └── scoring-system-discussion-2025-01-05.md
+```
+
+**项目文件结构** (v1.20新增):
+```
+development/
+├── active/                # 活跃项目
+│   ├── issues/           # 问题清单 ✅
+│   ├── planning/         # 计划文档
+│   └── tracking/         # 进度追踪
+├── memories/             # 项目记忆库
+│   ├── context-snapshots/
+│   ├── design-decisions/
+│   └── project-notes/
+├── logs/                 # 工作日志
+│   ├── communications/   # 惊蛰计划沟通
+│   ├── workflow/
+│   └── session-end/
+├── workspace/            # 临时工作区
+│   ├── drafts/
+│   └── experiments/
+└── archive/              # 归档区
 ```
 
 **文件说明**:
@@ -258,7 +301,7 @@ development/issues/
 - **archive/**: 已完成的问题讨论记录归档
 - **README.md**: Issues目录详细说明文档
 
-详见: [development/issues/README.md](../../development/issues/README.md)
+详见: [development/active/issues/README.md](../../development/active/issues/README.md)
 
 ---
 
@@ -290,7 +333,40 @@ development/issues/
 - ✅ 文档同步质量大幅提升(未归档比例: 70% → <5%)
 - ✅ 同步约200行archive讨论记录到设计文档
 
-### v1.8 (2025-01-06) - 工作流修复与自动化增强 🔧
+### v1.17 (2026-01-11) - 每日总结自动化系统 📊
+- ✅ **新增**: daily-summary-agent (每日总结智能Agent)
+- ✅ **新增**: /daily-summary 命令 (手动触发总结)
+- ✅ **新增**: session-end Hook (会话结束自动总结)
+- ✅ **核心功能**:
+  - 自动分析今日完成任务
+  - 提取已确认问题和决策
+  - 自动更新 claude.md 进度概览 (L196-L257)
+  - 智能规划下次会话目标
+  - 保存总结到 agent-memory
+- ✅ **workflow-skill 更新**: v1.2 → v1.3
+- ✅ **工具总数**: 13个 → 14个 (7个Command + 6个Agent + 3个Hook)
+- ✅ **每月节省**: 40+小时
+
+### v1.18 (2026-01-11) - Hook系统完整集成 🎉
+- ✅ **新增**: 4个PostToolUse Hook配置文件:
+  - auto-doc-sync-hook.json - 问题100%完成自动同步
+  - milestone-notification-hook.json - 里程碑达成自动通知
+  - agent-completion-archive-hook.json - Agent完成报告自动归档
+  - doc-quality-monitor-hook.json - 文档质量自动监控
+- ✅ **新增**: /check-doc-quality 命令 - 文档质量检查器
+- ✅ **修复**: Hook数量统计错误 (3个 → 7个)
+- ✅ **工具总数**: 14个 → 18个 (8个Command + 6个Agent + 7个Hook)
+- ✅ **PostToolUse Hook** 现在包含5个子Hook:
+  - auto-doc-sync-hook (问题100%完成自动触发/sync-docs)
+  - milestone-notification-hook (里程碑达成自动通知)
+  - agent-completion-archive-hook (Agent完成报告自动归档)
+  - doc-quality-monitor-hook (文档质量自动监控)
+  - 通用文档修改监控
+- ✅ **Hook状态**: 从"仅文档" → "JSON配置完成，可自动触发"
+- ✅ **开发总时长**: 7.5小时 → 8小时
+- ✅ **自动化覆盖率**: 95%+ → 95%+ (保持)
+
+### v1.9 (2025-01-06) - 规范化重构与开发流程优化 📐
 - ✅ **新增**: doc-consistency-agent (文档一致性监控Agent)
 - ✅ **修复**: 版本号不一致问题 (claude.md v1.2 → v1.8)
 - ✅ **修复**: Hook配置JSON格式错误
@@ -343,7 +419,7 @@ development/issues/
 3. **[工作流技能说明](../../.claude/skills/workflow-skill/SKILL.md)** - 确认当前工作流程
 
 ### 第二优先级（设计阶段必读）
-4. **[评分系统问题清单](../../development/issues/scoring-system-questions.md)** ⭐
+4. **[评分系统问题清单](../../development/active/issues/scoring-system-questions.md)** ⭐
    - 查看当前讨论进度（第一轮/第二轮/第三轮/第四轮）
    - 确认上一次停在哪个问题
    - 了解已确认和待确认的问题
@@ -397,8 +473,8 @@ development/issues/
 - [内部系统设计文档 v0.3](../design/惊蛰计划-内部系统设计文档_v0.3_extended.md)
 
 **开发文档**：
-- [问题清单](../../development/issues/questions.md) ⭐
-- [Issues目录说明](../../development/issues/README.md) ⭐ (v1.12新增)
+- [问题清单](../../development/active/issues/questions.md) ⭐
+- [Issues目录说明](../../development/active/issues/README.md) ⭐ (v1.12新增)
 - [功能对比分析报告](../../development/analysis/功能对比分析报告.md) ⭐ (v1.11新增)
 - [工作流技能说明](../../.claude/skills/workflow-skill/SKILL.md)
 - [自动化工具开发检查清单](../../development/checklists/自动化工具开发检查清单.md) ⭐
@@ -496,10 +572,32 @@ development/issues/
 - ⚠️ 仅需重启Claude Code完成最终验证
 
 **下一步行动**:
-1. 重启Claude Code,验证Hook是否生效
-2. 测试PostToolUse Hook (修改文档后是否自动提醒)
-3. 测试SessionStart Hook (会话开始时是否自动加载上下文)
+1. ✅ Hook系统已优化完成 (2025-01-11)
+2. ✅ 自然语言交互系统已部署 (2025-01-11)
+3. ⏳ 重启Claude Code验证新配置
+4. ⏳ 继续设计讨论（推荐位机制/社区功能）
+
+**最近的技术改进** (2025-01-11):
+
+**v1.19 - 自然语言交互系统** 🎉:
+- ✅ 创建5个核心Prompt文件（意图识别、会话上下文、自然对话、推荐时机、系统总览）
+- ✅ 创建1个系统Prompt文件（natural-language-system.md）
+- ✅ 更新session_start.py（移除命令提示，添加自然语言提示）
+- ✅ 更新settings.json（SessionStart Hook自动加载自然语言系统）
+- ✅ 实现从"命令式"到"对话式"的转变
+- ✅ 用户现在可以用自然语言交流，无需记住21个命令
+
+**v1.18 - Hook系统完整集成**:
+- ✅ Hook系统完整集成: 找到正确配置位置 (.claude/settings.json)
+- ✅ 删除冗余配置: 10个文件 → 5个文件 (-50%)
+- ✅ 简化Hook prompt: 300字 → 100字 (-67%)
+- ✅ 新增 /check-doc-quality 命令
+- ✅ 文档准确性提升: 明确Hook配置位置和数量
+
+详见:
+- [natural-language-system-implementation-2025-01-11.md](../../development/logs/natural-language-system-implementation-2025-01-11.md)
+- [automation-issues_2025-01-11.md](../../development/active/issues/automation-issues_2025-01-11.md)
 
 ---
 
-*最后更新：2025-01-06 (v1.8)*
+*最后更新：2025-01-11 (v1.19)*

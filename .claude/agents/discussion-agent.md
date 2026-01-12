@@ -52,20 +52,20 @@ First, find the question list to discuss:
 ```python
 # Priority:
 # 1. User-provided file path
-# 2. development/issues/questions.md (default)
-# 3. development/issues/*questions.md (most recent)
+# 2. development/active/issues/questions.md (default)
+# 3. development/active/issues/*questions.md (most recent)
 
 def find_question_list():
     if user_specified_path:
         return user_specified_path
 
     # Try default location
-    default_path = "development/issues/questions.md"
+    default_path = "development/active/issues/questions.md"
     if file_exists(default_path):
         return default_path
 
     # Find latest question list
-    question_lists = glob("development/issues/*questions.md")
+    question_lists = glob("development/active/issues/*questions.md")
     if question_lists:
         return most_recent_file(question_lists)
 
@@ -121,12 +121,12 @@ def verify_question_status(question_info):
     question_title = question_info['title']
     question_keywords = extract_keywords(question_title)
 
-    # Search in development/issues/ directory
+    # Search in development/active/issues/ directory
     search_paths = [
-        "development/issues/questions.md",
-        "development/issues/*questions*.md",
-        "development/analysis/*question*.md",
-        "development/analysis/*confirmation*.md"
+        "development/active/issues/questions.md",
+        "development/active/issues/*questions*.md",
+        "development/active/analysis/*question*.md",
+        "development/active/analysis/*confirmation*.md"
     ]
 
     for search_path in search_paths:
@@ -457,11 +457,11 @@ def handle_completion(module_name, file_path, total_questions, round_stats):
 
 请确认:
 1. 文件路径是否正确
-2. development/issues/ 目录是否存在
+2. development/active/issues/ 目录是否存在
 3. 是否有问题清单文件 (*questions.md)
 
 **可用的问题清单**:
-{List all available question lists in development/issues/}
+{List all available question lists in development/active/issues/}
 
 **建议**:
 - 检查目录结构

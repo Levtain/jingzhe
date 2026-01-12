@@ -38,8 +38,8 @@ else:
 ### 步骤2: 扫描问题清单文件
 
 ```bash
-使用Glob查找 development/issues/ 目录下的问题清单:
-  development/issues/*questions.md
+使用Glob查找 development/active/issues/ 目录下的问题清单:
+  development/active/issues/*questions.md
 
 对每个问题清单:
 1. 读取文件内容
@@ -180,7 +180,7 @@ else:
 ⚠️ 警告: 未找到问题清单文件
 
 请确认:
-1. development/issues/ 目录是否存在
+1. development/active/issues/ 目录是否存在
 2. 是否有问题清单文件(*questions.md)
 
 建议:

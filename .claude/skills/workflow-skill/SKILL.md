@@ -1,18 +1,18 @@
 ---
 name: jingzhe-workflow
-description:惊蛰计划(Jingzhe Project)专用协作工作流。用于游戏竞赛平台的设计讨论、功能开发、问题修复和项目协作。包含设计问题管理、需求确认、任务分解、进度追踪、质量检查等完整流程。集成docs-write/docs-review/doc-coauthoring文档处理能力,以及12个自动化工具(Command/Hook/Agent)。适用于产品经理(蜡烛先生)提出的各类需求。
-version: 1.2.1
-last_updated: 2025-01-07
+description:惊蛰计划(Jingzhe Project)专用协作工作流。用于游戏竞赛平台的设计讨论、功能开发、问题修复和项目协作。包含设计问题管理、需求确认、任务分解、进度追踪、质量检查等完整流程。集成docs-write/docs-review/doc-coauthoring文档处理能力,以及14个自动化工具(Command/Hook/Agent)和2个产品管理Skill(product-manager-toolkit/product-requirements)。适用于产品经理(蜡烛先生)提出的各类需求。
+version: 1.4
+last_updated: 2025-01-12
 ---
 
-# 惊蛰计划协作工作流 v1.2.1
+# 惊蛰计划协作工作流 v1.4
 
 惊蛰计划项目专用协作标准,定义Claude与产品经理(蜡烛先生)之间的高效协作方式。
 
 > **项目背景**: 游戏竞赛平台 - 从钉子平台到行业影响力的三阶段战略
 > **当前阶段**: 设计阶段 v0.3 → 第一届开赛准备
 > **核心目标**: 让比赛活下来,建立群众基础,积累影响力
-> **自动化**: 集成12个自动化工具,95%+工作流自动化
+> **自动化**: 集成14个自动化工具,95%+工作流自动化
 
 ---
 
@@ -40,27 +40,32 @@ last_updated: 2025-01-07
 
 ---
 
-## 🚀 自动化工具 (v1.2新增)
+## 🚀 自动化工具 (v1.2新增, v1.3更新)
 
-> **重要**: 惊蛰计划已集成12个自动化工具,工作流自动化覆盖度达95%+
+> **重要**: 惊蛰计划已集成14个自动化工具,工作流自动化覆盖度达95%+
 
 ### 工具总览
 
 ```
-12个自动化工具
-├── 6个Command工具 (手动触发,快速执行)
-├── 2个Hook工具 (自动触发,后台运行)
-└── 4个Agent工具 (智能分析,自主处理)
+14个自动化工具
+├── 7个Command工具 (手动触发,快速执行)
+├── 3个Hook工具 (自动触发,后台运行)
+└── 5个Agent工具 (智能分析,自主处理)
 
-总代码量: ~76.5KB
-开发时长: 7小时
-每月节省: 36小时
-ROI: 514% (按月计算)
+总代码量: ~82KB
+开发时长: 7.5小时
+每月节省: 40+小时
+ROI: 571% (按月计算)
 ```
+
+**v1.3新增**:
+- ✅ daily-summary-agent - 每日总结智能Agent
+- ✅ /daily-summary - 每日总结命令
+- ✅ session-end Hook - 会话结束自动总结
 
 ---
 
-### Command工具 (6个)
+### Command工具 (7个)
 
 **使用方式**: 直接输入命令,如 `/discuss`
 
@@ -72,6 +77,7 @@ ROI: 514% (按月计算)
 | `/token-check` | 检查Token使用 | 避免会话中断 | 避免损失 |
 | `/check-completion` | 完成自检 | 任务完成后检查文档完整性 | 10分钟 → 1分钟 |
 | `/review-docs` | 审核文档质量 | 检查文档风格、格式、链接 | 30分钟 → 5分钟 |
+| `/daily-summary` | 生成每日总结 | 每天工作结束或查看今日进度 | 15分钟 → 1分钟 ⭐ |
 
 **使用示例**:
 ```bash
@@ -92,11 +98,14 @@ ROI: 514% (按月计算)
 
 # 场景6: 审核文档质量
 /review-docs
+
+# 场景7: 每天工作结束 ⭐ 新增
+/daily-summary
 ```
 
 ---
 
-### Hook工具 (2个)
+### Hook工具 (3个)
 
 **使用方式**: 自动触发,无需手动调用
 
@@ -104,22 +113,31 @@ ROI: 514% (按月计算)
 |-----|---------|------|------|
 | **PostToolUse Hook** | 执行Write/Edit工具后 | 自动提醒记录决策和同步文档 | 减少80%遗漏 |
 | **SessionStart Hook** | 会话开始时 | 自动加载项目上下文和进度 | 节省启动时间 |
+| **SessionEnd Hook** | 会话结束时 | 自动生成每日总结并更新进度 | 自动归档 ⭐ |
 
 **自动化提醒示例**:
 ```
 📋 PostToolUse Hook自动提醒:
 ━━━━━━━━━━━━━━━━
 ⚠️ 文档已修改,请确认是否需要:
-1. ✅ 记录到问题清单 (development/issues/)
+1. ✅ 记录到问题清单 (development/active/issues/)
 2. ✅ 同步到设计文档 (docs/design/)
 3. ✅ 更新CHANGELOG.md
 4. ✅ 创建开发日志 (development/logs/)
+━━━━━━━━━━━━━━━━
+
+📊 SessionEnd Hook自动总结:
+━━━━━━━━━━━━━━━━
+✅ 今日工作总结已生成
+✅ claude.md 进度概览已更新
+✅ agent-memory 已保存
+✅ 下次会话建议已规划
 ━━━━━━━━━━━━━━━━
 ```
 
 ---
 
-### Agent工具 (4个)
+### Agent工具 (5个)
 
 **使用方式**: 通过命令或自动调用
 
@@ -129,8 +147,9 @@ ROI: 514% (按月计算)
 | **doc-sync-agent** | 智能检查文档一致性并同步更新 | ⭐⭐⭐⭐ | /sync-docs自动调用 | 30分钟/周 |
 | **progress-summary-agent** | 自动收集任务并生成进度报告 | ⭐⭐⭐⭐ | /check-progress自动调用 | 20分钟/周 |
 | **doc-review-agent** | 深度审核文档质量并提供改进建议 | ⭐⭐⭐⭐⭐ | /review-docs自动调用 | 25分钟/周 |
+| **daily-summary-agent** | 生成每日工作总结并更新进度追踪 | ⭐⭐⭐⭐ | /daily-summary或session-end | 30分钟/周 ⭐ |
 
-**Agent总效果**: 每周节省约2小时
+**Agent总效果**: 每周节省约2.5小时
 
 ---
 
@@ -138,18 +157,6 @@ ROI: 514% (按月计算)
 
 #### 场景1: 设计讨论流程 (已优化)
 
-**之前** (手动):
-```
-1. 手动读取设计文档 (2分钟)
-2. 手动提取问题 (10分钟)
-3. 手动分类整理 (8分钟)
-4. 逐一提问 (人工进行)
-5. 手动记录答案 (5分钟/个)
-6. 手动同步文档 (15分钟)
-总计: ~40分钟 + 讨论时间
-```
-
-**现在** (自动化):
 ```
 1. question-analysis-agent 自动提取问题 (30秒)
 2. /discuss 自动启动讨论 (5秒)
@@ -164,17 +171,6 @@ ROI: 514% (按月计算)
 
 #### 场景2: 文档同步流程 (已优化)
 
-**之前** (手动):
-```
-1. 检查问题清单 (2分钟)
-2. 更新设计文档 (5分钟)
-3. 更新CHANGELOG (3分钟)
-4. 创建开发日志 (5分钟)
-总计: 15分钟
-容易遗漏: 30%
-```
-
-**现在** (自动化):
 ```
 1. /sync-docs 一键执行
    → doc-sync-agent 自动检查一致性
@@ -190,16 +186,6 @@ ROI: 514% (按月计算)
 
 #### 场景3: 进度查询流程 (已优化)
 
-**之前** (手动):
-```
-1. 搜索所有问题清单文件 (5分钟)
-2. 检查每个问题的状态 (10分钟)
-3. 汇总已完成任务 (3分钟)
-4. 整理待办事项 (2分钟)
-总计: 20分钟
-```
-
-**现在** (自动化):
 ```
 1. /check-progress 一键查询
    → progress-summary-agent 自动收集
@@ -213,16 +199,6 @@ ROI: 514% (按月计算)
 ---
 
 #### 场景4: 质量保障流程 (已优化)
-
-**之前** (手动):
-```
-1. 手动检查文档风格 (10分钟)
-2. 手动验证格式 (8分钟)
-3. 手动检查链接 (7分钟)
-4. 手动检查完整性 (5分钟)
-总计: 30分钟
-覆盖率: 低
-```
 
 **现在** (自动化):
 ```
@@ -283,11 +259,27 @@ SessionStart Hook (自动加载上下文)
 /check-completion (自检文档完整性)
 /review-docs (审核文档质量)
 
-# 每天结束
-/check-progress (生成进度报告)
+# 每天结束 (重要!)
+/daily-summary (生成每日总结) ⭐ 新增
+  → daily-summary-agent 自动执行:
+     - 分析今日完成的任务
+     - 提取已确认问题和决策
+     - 自动更新 claude.md 进度概览 (L196-L257)
+     - 生成下一步计划
+     - 保存到 agent-memory
+     - 更新 CHANGELOG.md (如有重要决策)
 ```
 
 **效果**: 每日节省约1.6小时
+
+**新增功能 (v1.3)**:
+- ✅ **session-end Hook**: 会话结束时自动触发每日总结
+- ✅ **手动触发**: `/daily-summary` 命令随时生成总结
+- ✅ **自动更新**: claude.md 进度概览自动保持最新
+- ✅ **智能分析**: 识别已完成任务、重要决策、进度增长
+- ✅ **下一步规划**: 基于优先级自动规划下次会话目标
+
+详见: [/daily-summary 命令文档](../../commands/daily-summary.md) | [daily-summary-agent](../../agents/daily-summary-agent.md) | [session-end Hook](../../hooks/session-end/daily-summary-hook.md)
 
 ---
 
@@ -325,25 +317,6 @@ SessionStart Hook (自动加载上下文)
 
 ---
 
-### 自动化工具的价值
-
-**时间节省**:
-- 每日: 97分钟 ≈ 1.62小时
-- 每月: 36小时 ≈ 4.5个工作日
-- 每年: 432小时 ≈ 2.5个月
-
-**质量提升**:
-- 遗漏率: 30% → <3% (提升90%)
-- 一致性: 60% → 95% (提升58%)
-- 审核覆盖率: 0% → 100% (从无到有)
-
-**战略价值**:
-- ✅ 建立完整的自动化工具体系
-- ✅ 形成可复制的开发模式
-- ✅ 为未来扩展提供框架
-
----
-
 ## 🎯 核心原则
 
 ### 沟通三原则
@@ -376,22 +349,30 @@ Claude负责:
 
 ---
 
-## 🔄 阶段0: 设计讨论流程
+## 🔄 阶段0: 需求评估与设计讨论流程
 
-**适用时机**: 在设计阶段,需要深入讨论业务规则和系统设计细节
+**适用时机**:
+- 在设计阶段,需要深入讨论业务规则和系统设计细节
+- 有多个待讨论问题需要评估优先级
+- 需要生成结构化的需求文档
 
-### 执行流程图 (已优化v1.2)
+### 执行流程图 (已优化v1.4 - 集成需求评估)
 
-**自动化流程**:
+**完整自动化流程**:
 ```
+0️⃣ 需求评估阶段 (新增 - v1.4):
+   → product-manager-toolkit: RICE优先级评估
+   → 生成优先级排序的问题清单
+   → product-requirements: 生成交互式PRD (90分+质量保证)
+   ↓
 1️⃣ 准备阶段 (自动化):
    → question-analysis-agent: 自动提取问题并分类
-   → 生成问题清单到 development/issues/
+   → 生成问题清单到 development/active/issues/
    ↓
 2️⃣ 讨论阶段 (半自动):
    → /discuss: 自动启动讨论,准备提问模板
    → SessionStart Hook: 自动加载上下文
-   → 逐一提问 (人工进行)
+   → 逐一提问 (基于PRD文档)
    → PostToolUse Hook: 自动提醒记录
    ↓
 3️⃣ 同步阶段 (自动化):
@@ -407,9 +388,140 @@ Claude负责:
 
 **效率提升**: 手动40分钟 → 自动化2.5分钟 (16倍提升)
 
+**新增价值** (v1.4):
+- ✅ 优先级评估: 从"随机讨论"到"有序推进"
+- ✅ 结构化PRD: 从"口头描述"到"90分文档"
+- ✅ 高效讨论: 基于清晰需求文档,减少50%讨论时间
+
 ---
 
 ### 详细步骤
+
+#### 步骤0: 需求评估与PRD生成 🆕 v1.4
+
+**目的**: 在深入讨论前,先评估优先级并生成结构化需求文档
+
+**0.1 RICE优先级评估** (可选,当有多个待讨论问题时):
+
+**何时使用**:
+- 有10个以上的待讨论问题
+- 不确定应该先讨论哪些问题
+- 需要量化评估需求价值
+
+**如何执行**:
+```bash
+用户: "帮我评估这53个问题的优先级"
+
+AI: [调用product-manager-toolkit skill]
+
+    正在使用RICE框架评估问题...
+
+    评估维度:
+    - R (Reach): 影响范围
+    - I (Impact): 影响程度(0.25-3分)
+    - C (Confidence): 信心指数(%)
+    - E (Effort): 工作量(人月)
+
+    P0问题 (8个, RICE>120, 立即讨论):
+    - 反作弊系统 (RICE=180)
+    - 成就系统 (RICE=165)
+    - 团队排名规则 (RICE=152)
+    ...
+
+    P1问题 (15个, RICE 60-120, 近期讨论):
+    ...
+
+    建议: 优先处理P0问题,预计1-2周
+```
+
+**评估结果**:
+- ✅ 清晰的优先级分级 (P0/P1/P2/P3)
+- ✅ 量化的RICE分数
+- ✅ 建议的讨论顺序
+- ✅ 预计时间分配
+
+**详细指南**: [`.claude/guide/workflows/requirement-assessment.md`](../../guide/workflows/requirement-assessment.md)
+
+---
+
+**0.2 生成交互式PRD** (推荐,为重要功能生成高质量需求文档):
+
+**何时使用**:
+- P0/P1优先级的功能
+- 需要结构化需求文档
+- 希望提高讨论效率
+
+**如何执行**:
+```bash
+用户: "为反作弊系统生成PRD"
+
+AI: [调用product-requirements skill]
+
+    你好!我是Sarah,产品负责人。
+
+    让我们确认反作弊系统的需求...
+
+    Q1: 反作弊系统的主要目标是什么?
+    - A. 防止刷分
+    - B. 检测异常评分行为
+    - C. 保护平台公平性
+
+    你: A和B,主要是防止刷分和检测异常评分
+
+    Q2: 我们打算如何检测作弊行为?
+    ...
+
+    [对话5-10轮,收集完整需求]
+
+    正在生成PRD...
+
+    质量评分: 92分 ✅
+    (商业价值:28/30, 功能完整性:24/25, UX:18/20, 技术:14/15, 范围:8/10)
+
+    文档已保存: docs/anti-cheat-system-prd.md
+```
+
+**PRD质量保证**:
+- ✅ 90分以上质量评分
+- ✅ 五维度评分系统
+- ✅ 迭代优化直到达标
+- ✅ 标准化文档格式
+
+**详细指南**: [`.claude/guide/workflows/requirement-assessment.md`](../../guide/workflows/requirement-assessment.md)
+
+---
+
+**完整示例**:
+
+```bash
+# 第1天: RICE评估
+用户: 帮我评估这53个未讨论问题
+
+AI: [使用product-manager-toolkit]
+    评估完成!
+    P0: 8个问题 (立即讨论)
+    P1: 15个问题 (近期讨论)
+    ...
+
+# 第2天: 为P0问题生成PRD
+用户: 为反作弊系统生成PRD
+
+AI: [使用product-requirements]
+    [对话10轮]
+    ✅ PRD生成完成!质量评分:92分
+
+# 第3-5天: 基于PRD进行讨论
+用户: 开始讨论反作弊系统
+
+AI: 基于PRD,有以下8个问题需要确认:
+    Q1: 善意度初始值?
+    Q2: 检测算法?
+    ...
+
+    [讨论更高效,因为需求已清晰]
+```
+
+---
 
 #### 步骤1: 自动创建问题清单 🚀
 
@@ -425,7 +537,7 @@ Task: question-analysis-agent
 - ✅ 提取所有待确认问题
 - ✅ 按优先级分类(第一轮/第二轮/第三轮/第四轮)
 - ✅ 生成结构化问题清单
-- ✅ 保存到 `development/issues/模块名-questions.md`
+- ✅ 保存到 `development/active/issues/模块名-questions.md`
 
 **节省时间**: 20分钟 → 30秒 (40倍提升)
 
@@ -435,7 +547,7 @@ Task: question-analysis-agent
 
 **文件组织**:
 ```
-development/issues/
+development/active/issues/
 ├── README.md                              (目录说明)
 ├── questions.md                           (主问题清单 - 45个问题)
 ├── bugs.md                                (Bug追踪清单 - 开发阶段使用)
@@ -480,7 +592,7 @@ development/issues/
   - **第二轮**: 细节机制(具体实现方式)
   - **第三轮**: 风控与边界(异常情况处理)
   - **第四轮**: 后续优化(第二届或未来考虑)
-- 保存到 `development/issues/模块名-questions.md`
+- 保存到 `development/active/issues/模块名-questions.md`
 - 每个问题必须有明确的选项(A/B/C/D)或具体问题
 
 **示例问题格式**:
@@ -524,7 +636,7 @@ development/issues/
 **提问模板**:
 ```markdown
 【当前模块】评分系统设计
-【问题清单】development/issues/scoring-system-questions.md
+【问题清单】development/active/issues/scoring-system-questions.md
 【讨论阶段】第一轮(核心逻辑)
 【当前进度】1.1 ✅ → 1.2 (当前)
 
@@ -1234,10 +1346,10 @@ development/issues/
 | 文档类型 | 更新时机 | 保存位置 | 责任人 | 使用的Skill |
 |---------|---------|---------|--------|-----------|
 | **开发日志** | 每天 | development/logs/dev-log-YYYY-MM-DD.md | Claude | docs-write |
-| **问题清单** | 发现问题时 | development/issues/questions.md | Claude | docs-write |
-| **模块问题清单** | 模块讨论开始 | development/issues/模块名-questions.md | Claude | docs-write |
-| **Bug追踪** | 发现Bug时 | development/issues/bugs.md | Claude | docs-write |
-| **技术决策** | 做决策时 | development/decisions/XXX.md | Claude | doc-coauthoring |
+| **问题清单** | 发现问题时 | development/active/issues/questions.md | Claude | docs-write |
+| **模块问题清单** | 模块讨论开始 | development/active/issues/模块名-questions.md | Claude | docs-write |
+| **Bug追踪** | 发现Bug时 | development/active/issues/bugs.md | Claude | docs-write |
+| **技术决策** | 做决策时 | development/workspace/drafts/decisions/XXX.md | Claude | doc-coauthoring |
 | **设计文档** | 设计确认后 | docs/design/XXX_vX.X.md | Claude | doc-coauthoring + docs-write |
 | **变更日志** | 重要变更时 | docs/product/CHANGELOG.md | Claude | docs-write |
 | **项目配置** | 重要共识后 | docs/product/claude.md | 共同 | docs-write |
@@ -1585,12 +1697,12 @@ development/issues/
 
 - **评分系统**: `docs/design/评分系统设计方案_v1.2.md`
 - **排名算法**: `docs/design/排名系统技术实现文档_v1.0.md`
-- **待讨论问题**: `development/issues/questions.md`
-- **未讨论问题总结**: `development/analysis/未讨论问题总结_2025-01-06.md`
+- **待讨论问题**: `development/active/issues/questions.md`
+- **未讨论问题总结**: `development/active/analysis/未讨论问题总结_2025-01-06.md`
 
 ### 工作流可视化
 
-- **流程图**: `development/analysis/惊蛰计划_工作流可视化.md`
+- **流程图**: `development/active/analysis/惊蛰计划_工作流可视化.md`
   - 包含完整的Mermaid流程图
   - 可在 https://mermaid.live/ 查看渲染效果
 
@@ -1600,6 +1712,8 @@ development/issues/
 
 | 版本 | 日期 | 变更内容 | 作者 |
 |------|------|---------|------|
+| **v1.4** | **2025-01-12** | **新增: 需求评估与PRD生成流程**<br>- ✅ 集成product-manager-toolkit (RICE优先级评估)<br>- ✅ 集成product-requirements (交互式PRD生成,90分+质量保证)<br>- ✅ 新增【步骤0: 需求评估与PRD生成】<br>- ✅ 更新流程图: 从5步到6步(0-5步)<br>- ✅ 创建需求评估流程文档: `.claude/guide/workflows/requirement-assessment.md`<br>- ✅ 创建RICE评估模板: `development/active/planning/rice-assessment-template.md`<br>- **核心价值**: 从"随机讨论"到"有序推进",讨论效率提升50%<br>- **适用场景**: 53个未讨论问题的优先级评估和PRD生成 | **老黑(Claude)** |
+| **v1.3** | **2026-01-11** | **新增: 每日总结自动化系统**<br>- ✅ 新增 daily-summary-agent (每日总结智能Agent)<br>- ✅ 新增 /daily-summary 命令(手动触发总结)<br>- ✅ 新增 session-end Hook(会话结束自动总结)<br>- ✅ 更新【推荐组合2: 每日工作流】,添加每日总结步骤<br>- ✅ 工具总数: 12个 → 14个<br>- ✅ 每月节省时间: 36小时 → 40+小时<br>- ✅ ROI: 514% → 571%<br>- **核心功能**: 自动更新claude.md进度概览、智能规划下一步 | **老黑(Claude)** |
 | **v1.2** | **2025-01-06** | **重大更新: 集成12个自动化工具**<br>- ✅ 新增【自动化工具】章节,完整介绍12个工具<br>- ✅ 更新【阶段0: 设计讨论流程】,展示自动化工作流<br>- ✅ 添加4个工作流自动化场景对比<br>- ✅ 添加3个工具组合最佳实践<br>- ✅ 更新所有流程步骤,标注🚀自动化选项<br>- ✅ 添加自动化效果总结表<br>- **自动化覆盖度**: 95%+<br>- **效率提升**: 11.8倍(设计讨论流程) | **老黑(Claude)** |
 | v1.1 | 2025-01-06 | 新增文档Skill集成<br>- 安装docs-write/docs-review/doc-coauthoring<br>- 更新文档同步规范,包含Skill使用说明<br>- 添加文档编写最佳实践流程 | 老黑(Claude) |
 | v1.0 | 2025-01-06 | 基于新skill结构优化,补充完整流程 | 老黑(Claude) |

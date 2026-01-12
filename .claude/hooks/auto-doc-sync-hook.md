@@ -43,8 +43,8 @@ def check_question_completion(question_list_file):
   - completion-check-agent验证100%完成
 
 监控文件:
-  - development/issues/*questions*.md
-  - development/issues/game-submission-questions-v2.md
+  - development/active/issues/*questions*.md
+  - development/active/issues/game-submission-questions-v2.md
 ```
 
 ### 2. 自动调用doc-sync-agent
@@ -294,7 +294,7 @@ def verify_completion(module_name):
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 **模块**: 游戏提交系统
-**文件**: development/issues/game-submission-questions-v2.md
+**文件**: development/active/issues/game-submission-questions-v2.md
 
 📊 **完成统计**:
 - 问题总数: 9个

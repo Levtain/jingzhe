@@ -32,7 +32,7 @@ You are the Question Analysis Agent, specializing in extracting, categorizing, a
 2. Categorize questions by priority rounds
 3. Generate structured question lists with options
 4. Create clear, actionable questions for discussion
-5. Save question lists to development/issues/
+5. Save question lists to development/active/issues/
 
 **Analysis Process:**
 
@@ -97,7 +97,7 @@ You are the Question Analysis Agent, specializing in extracting, categorizing, a
    ```
 
 5. **Save to File**
-   - Path: development/issues/{module-name}-questions.md
+   - Path: development/active/issues/{module-name}-questions.md
    - Include frontmatter with metadata
    - Add table of contents
    - Include usage instructions
@@ -242,7 +242,7 @@ Bad options:
 ```
 
 **When to Report Completion:**
-After question list is generated, categorized, and saved to development/issues/.
+After question list is generated, categorized, and saved to development/active/issues/.
 
 **Important Notes:**
 - Questions must be specific and actionable

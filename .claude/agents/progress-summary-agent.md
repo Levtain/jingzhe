@@ -44,7 +44,7 @@ You are the Progress Summary Agent, specializing in analyzing project progress a
    - Extract completed items with dates
 
 2. **Analyze Question Progress**
-   - Scan development/issues/*questions.md
+   - Scan development/active/issues/*questions.md
    - Count confirmed (✅) vs pending questions
    - Group by module and priority round
    - Calculate completion percentages

@@ -1,0 +1,42 @@
+{
+  "description": "模块/里程碑完成时自动发送通知并推荐下一步操作",
+  "enabled": true,
+  "trigger": {
+    "events": [
+      "post_tool_use"
+    ],
+    "tool_filters": [
+      "Edit",
+      "Write"
+    ],
+    "file_patterns": [
+      "development/active/issues/*questions*.md",
+      "development/testing/*completion*.md",
+      "development/archive/*completion*.md"
+    ],
+    "condition": "检测到里程碑完成（问题清单100%完成、模块验证通过等）"
+  },
+  "action": {
+    "type": "notification",
+    "include_recommendations": true,
+    "include_statistics": true
+  },
+  "config": {
+    "milestone_types": [
+      "questions_completed",
+      "module_verified",
+      "agent_completed",
+      "phase_goal_reached"
+    ],
+    "show_recommendations": true,
+    "show_statistics": true,
+    "windows_toast": true,
+    "play_sound": true,
+    "sound_type": "milestone"
+  },
+  "notification": {
+    "template": "🎉 **里程碑达成: {milestone_name}!**\n\n完成度: {completion_rate}% ✅\n\n🎯 **推荐下一步**:\n{recommendations}",
+    "show_windows_notification": true,
+    "play_sound": true
+  }
+}

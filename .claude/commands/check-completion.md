@@ -55,7 +55,7 @@ allowed-tools: Read, Grep
 ### 步骤2: 扫描问题清单
 
 ```bash
-查找: development/issues/*questions.md
+查找: development/active/issues/*questions.md
 
 检查项:
 - 最近标记✅的问题
@@ -187,7 +187,7 @@ allowed-tools: Read, Grep
 ```markdown
 ⚠️ 未找到问题清单
 
-检查目录: development/issues/
+检查目录: development/active/issues/
 
 结果: 没有找到 *questions.md 文件
 

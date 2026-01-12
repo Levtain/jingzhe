@@ -56,18 +56,18 @@ def locate_module_documents(module_name=None):
     Priority:
     1. User-provided module name
     2. Latest design document in docs/design/
-    3. Latest question list in development/issues/
+    3. Latest question list in development/active/issues/
     """
     if module_name:
         # Search for module-specific documents
         design_docs = glob(f"docs/design/*{module_name}*.md")
-        question_lists = glob(f"development/issues/*{module_name}*questions.md")
-        decision_logs = glob(f"development/decisions/*{module_name}*.md")
+        question_lists = glob(f"development/active/issues/*{module_name}*questions.md")
+        decision_logs = glob(f"development/workspace/drafts/decisions/*{module_name}*.md")
     else:
         # Find latest documents
         design_docs = glob("docs/design/*.md")
-        question_lists = glob("development/issues/*questions.md")
-        decision_logs = glob("development/decisions/*.md")
+        question_lists = glob("development/active/issues/*questions.md")
+        decision_logs = glob("development/workspace/drafts/decisions/*.md")
 
     return {
         "design_docs": design_docs,

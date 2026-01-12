@@ -23,7 +23,7 @@
 **触发条件**:
 ```yaml
 event: FileCreated
-file_pattern: development/issues/*questions*.md
+file_pattern: development/active/issues/*questions*.md
 ```
 
 **自动执行**:
@@ -394,7 +394,7 @@ hooks:
   - name: question-list-created
     trigger:
       event: FileCreated
-      pattern: "development/issues/*questions*.md"
+      pattern: "development/active/issues/*questions*.md"
     action:
       type: verify_questions
       auto_update: false  # 询问用户后再更新

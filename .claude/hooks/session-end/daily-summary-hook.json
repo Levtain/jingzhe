@@ -1,0 +1,68 @@
+{
+  "hook_name": "daily-summary-hook",
+  "version": "1.0",
+  "type": "session_end",
+  "enabled": true,
+  "trigger": {
+    "event": "session_end",
+    "timing": "before_close",
+    "condition": "auto"
+  },
+  "agent": {
+    "name": "daily-summary-agent",
+    "path": ".claude/agents/daily-summary-agent.md",
+    "mode": "non_blocking"
+  },
+  "actions": [
+    {
+      "name": "generate_daily_summary",
+      "description": "生成今日工作总结",
+      "steps": [
+        "读取当前会话历史",
+        "分析今日完成任务",
+        "提取已确认问题和决策",
+        "生成下一步计划",
+        "更新claude.md进度概览",
+        "保存总结到agent-memory"
+      ]
+    },
+    {
+      "name": "update_progress_tracking",
+      "description": "更新进度追踪",
+      "files": [
+        "docs/product/claude.md (L196-L257)",
+        "docs/product/CHANGELOG.md (如需要)"
+      ]
+    },
+    {
+      "name": "save_session_log",
+      "description": "保存会话日志",
+      "output": "development/logs/session-end/{date}-summary.md"
+    }
+  ],
+  "notification": {
+    "enabled": true,
+    "message": "📊 今日工作总结已生成",
+    "show_summary": true,
+    "show_next_steps": true
+  },
+  "error_handling": {
+    "on_failure": "log_and_continue",
+    "fallback_actions": [
+      "保存日志文件记录错误",
+      "不阻塞会话关闭",
+      "提供手动更新指引"
+    ]
+  },
+  "logging": {
+    "enabled": true,
+    "log_file": "development/logs/hooks/session-end.log",
+    "log_level": "info"
+  },
+  "metadata": {
+    "created_date": "2026-01-11",
+    "last_modified": "2026-01-11",
+    "author": "Claude (Assistant)",
+    "description": "会话结束时自动生成每日工作总结并更新进度追踪"
+  }
+}

@@ -19,7 +19,7 @@ allowed-tools: Read, Grep
 
 ```bash
 /discuss                                    # 使用默认问题清单
-/discuss development/issues/scoring-system-questions.md  # 指定问题清单
+/discuss development/active/issues/scoring-system-questions.md  # 指定问题清单
 ```
 
 ## 执行流程
@@ -32,7 +32,7 @@ allowed-tools: Read, Grep
 如果用户提供了参数 $1:
   使用 $1 作为问题清单文件
 否则:
-  搜索 development/issues/ 目录下的最新问题清单
+  搜索 development/active/issues/ 目录下的最新问题清单
   选择最近修改的文件
 ```
 
@@ -118,11 +118,11 @@ allowed-tools: Read, Grep
 
 请检查:
 1. 文件路径是否正确
-2. 文件是否存在于 development/issues/ 目录
+2. 文件是否存在于 development/active/issues/ 目录
 3. 可以尝试手动指定文件路径: /discuss [文件路径]
 
 可用的问题清单:
-{列出 development/issues/ 下的所有.md文件}
+{列出 development/active/issues/ 下的所有.md文件}
 ```
 
 ### 情况2: 所有问题都已确认
@@ -163,7 +163,7 @@ allowed-tools: Read, Grep
 ### 输出
 ```markdown
 【当前模块】评分系统设计
-【问题清单】development/issues/scoring-system-questions.md
+【问题清单】development/active/issues/scoring-system-questions.md
 【讨论阶段】第一轮(核心逻辑)
 【当前进度】1.1 ✅ → 1.2 (当前)
 

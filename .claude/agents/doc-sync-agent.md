@@ -36,7 +36,7 @@ You are the Document Synchronization Agent, specializing in maintaining consiste
 
 **Analysis Process:**
 
-1. **Scan Question Lists** (development/issues/*questions.md)
+1. **Scan Question Lists** (development/active/issues/*questions.md)
    - Identify newly confirmed questions (marked with ✅)
    - Extract decision details (choice, reason, final decision)
    - Note which documents/sections need updating

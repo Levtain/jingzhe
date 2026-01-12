@@ -106,16 +106,16 @@
 ### 搜索的文档类型
 
 1. **主问题汇总**
-   - development/issues/questions.md
+   - development/active/issues/questions.md
 
 2. **其他问题清单**
-   - development/issues/*questions*.md
+   - development/active/issues/*questions*.md
 
 3. **分析和总结文档**
-   - development/analysis/*summary*.md
-   - development/analysis/*confirmation*.md
-   - development/analysis/*resolution*.md
-   - development/analysis/*risk*.md
+   - development/active/analysis/*summary*.md
+   - development/active/analysis/*confirmation*.md
+   - development/active/analysis/*resolution*.md
+   - development/active/analysis/*risk*.md
 
 4. **开发日志**
    - development/logs/dev-log-*.md

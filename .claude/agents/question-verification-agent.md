@@ -81,12 +81,12 @@ def search_confirmations(question):
 
     # Search paths (priority order)
     search_paths = [
-        "development/issues/questions.md",           # Master question list
-        "development/issues/*questions*.md",         # Other question lists
-        "development/analysis/*summary*.md",         # Summary documents
-        "development/analysis/*confirmation*.md",     # Confirmation documents
-        "development/analysis/*resolution*.md",      # Resolution documents
-        "development/analysis/*risk*.md",            # Risk analysis documents
+        "development/active/issues/questions.md",           # Master question list
+        "development/active/issues/*questions*.md",         # Other question lists
+        "development/active/analysis/*summary*.md",         # Summary documents
+        "development/active/analysis/*confirmation*.md",     # Confirmation documents
+        "development/active/analysis/*resolution*.md",      # Resolution documents
+        "development/active/analysis/*risk*.md",            # Risk analysis documents
         "development/logs/dev-log-*.md",             # Development logs
         "docs/design/*设计文档*.md"                  # Design documents
     ]
@@ -267,7 +267,7 @@ def update_confirmed_questions(question_list_file, confirmations):
 ```yaml
 trigger:
   - New question list file created
-  - File pattern: development/issues/*questions*.md
+  - File pattern: development/active/issues/*questions*.md
 
 action:
   - Launch question-verification-agent
@@ -305,7 +305,7 @@ action:
 
 ```bash
 # Verify specific question list
-/verify-questions development/issues/game-submission-questions-v2.md
+/verify-questions development/active/issues/game-submission-questions-v2.md
 
 # Verify latest question list
 /verify-questions

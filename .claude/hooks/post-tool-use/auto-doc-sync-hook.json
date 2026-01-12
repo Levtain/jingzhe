@@ -1,0 +1,36 @@
+{
+  "description": "问题清单100%完成后自动同步所有文档",
+  "enabled": true,
+  "trigger": {
+    "events": [
+      "post_tool_use"
+    ],
+    "tool_filters": [
+      "Edit",
+      "Write"
+    ],
+    "file_patterns": [
+      "development/active/issues/*questions*.md"
+    ],
+    "condition": "检查文件中是否所有问题都标记为✅（已确认）"
+  },
+  "action": {
+    "type": "run_command",
+    "command": "/sync-docs",
+    "auto_confirm": false,
+    "notification": true
+  },
+  "config": {
+    "check_interval_seconds": 0,
+    "require_confirmation": true,
+    "validate_result": true,
+    "show_progress": true
+  },
+  "notification": {
+    "on_trigger": "🔍 检测到问题清单可能已100%完成，准备同步文档...",
+    "on_complete": "✅ 文档同步完成！",
+    "on_error": "❌ 文档同步失败，请手动运行 /sync-docs",
+    "show_windows_notification": true,
+    "play_sound": false
+  }
+}

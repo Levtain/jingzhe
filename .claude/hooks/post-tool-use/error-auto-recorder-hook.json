@@ -1,0 +1,24 @@
+{
+  "description": "自动检测错误模式并记录到error-log.md",
+  "enabled": true,
+  "trigger": {
+    "events": [
+      "post_tool_use"
+    ],
+    "tool_filters": [
+      "Write",
+      "Edit",
+      "Bash",
+      "Skill"
+    ],
+    "condition": "检测到错误模式或用户负面反馈"
+  },
+  "action": {
+    "type": "command"
+  },
+  "config": {
+    "error_log_path": "development/active/tracking/error-log.md",
+    "auto_stop_on_error": true,
+    "require_acknowledgment": true
+  }
+}

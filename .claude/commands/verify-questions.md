@@ -32,7 +32,7 @@
 
 ```bash
 # 核实游戏提交系统问题清单
-/verify-questions development/issues/game-submission-questions-v2.md
+/verify-questions development/active/issues/game-submission-questions-v2.md
 
 # 核实最新问题清单并自动更新
 /verify-questions --update
@@ -50,14 +50,14 @@
     ↓
 1. 查找问题清单文件
    - 用户指定路径 或
-   - development/issues/*questions*.md (最新)
+   - development/active/issues/*questions*.md (最新)
     ↓
 2. 调用 question-verification-agent
     ↓
 3. 扫描相关文档
-   - development/issues/questions.md
-   - development/analysis/*summary*.md
-   - development/analysis/*resolution*.md
+   - development/active/issues/questions.md
+   - development/active/analysis/*summary*.md
+   - development/active/analysis/*resolution*.md
    - development/logs/dev-log-*.md
    - docs/design/*设计文档*.md
     ↓
@@ -200,7 +200,7 @@ def find_latest_question_list():
     """
     查找最新的问题清单文件
     """
-    question_lists = glob("development/issues/*questions*.md")
+    question_lists = glob("development/active/issues/*questions*.md")
 
     if not question_lists:
         raise FileNotFoundError("找不到问题清单文件")
@@ -222,9 +222,9 @@ def find_latest_question_list():
       "auto_update": false,
       "verbose": false,
       "search_paths": [
-        "development/issues/questions.md",
-        "development/analysis/*summary*.md",
-        "development/analysis/*resolution*.md",
+        "development/active/issues/questions.md",
+        "development/active/analysis/*summary*.md",
+        "development/active/analysis/*resolution*.md",
         "development/logs/dev-log-*.md",
         "docs/design/*设计文档*.md"
       ]
@@ -243,7 +243,7 @@ def find_latest_question_list():
 ❌ 错误: 找不到问题清单文件
 
 请检查:
-1. development/issues/ 目录是否存在
+1. development/active/issues/ 目录是否存在
 2. 是否有问题清单文件(*questions.md)
 3. 文件路径是否正确
 
@@ -326,7 +326,7 @@ def find_latest_question_list():
 
 ```bash
 # 创建问题清单后
-/verify-questions development/issues/new-module-questions.md
+/verify-questions development/active/issues/new-module-questions.md
 
 # 避免后续重复讨论
 ```

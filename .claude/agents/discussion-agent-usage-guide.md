@@ -63,7 +63,7 @@ discussion-agent 是一个专门用于问题讨论的Agent,它能自动化整个
 
 ```bash
 # 1. 确认有问题清单
-ls development/issues/*questions.md
+ls development/active/issues/*questions.md
 
 # 2. 首次启动讨论(可选)
 /discuss
@@ -114,7 +114,7 @@ Agent自动显示:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 【当前模块】评分系统设计
-【问题清单】development/issues/scoring-system-questions.md
+【问题清单】development/active/issues/scoring-system-questions.md
 【讨论阶段】第一轮 (核心逻辑)
 【当前进度】3 → Q1.4 (当前)
 
@@ -180,7 +180,7 @@ Agent自动显示:
 🎉 **恭喜! 所有问题已确认完成!**
 
 **模块**: 评分系统设计
-**问题清单**: development/issues/scoring-system-questions.md
+**问题清单**: development/active/issues/scoring-system-questions.md
 **总问题数**: 29个
 **完成时间**: 2025-01-10 23:30
 

@@ -1,12 +1,39 @@
 {
   "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "检查即将执行的操作:\n\n操作: $TOOL_NAME\n文件: $FILE_PATH\n\n判断:\n1. 这是.md文档任务吗？\n   - 如果是 → 必须使用 docs-write 或 docs-review skill\n   - 如果不是 → 可以直接执行\n\n2. 如果是.md文档，你是否已经调用了对应的docs skill？\n   - 如果已调用 → 继续执行\n   - 如果未调用 → 必须先调用skill，不能直接使用Write/Edit\n\n如果是.md文档且未调用skill，请返回错误并要求先调用docs skill。",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python d:/Claude/.claude/hooks/post-tool-use/error-auto-recorder.py"
+          }
+        ]
+      },
       {
         "matcher": "Write|Edit",
         "hooks": [
           {
             "type": "command",
-            "command": "python d:/Claude/.claude/hooks/document_sync.py"
+            "command": "python d:/Claude/.claude/hooks/document_sync.py",
+            "timeout": 60
+          },
+          {
+            "type": "prompt",
+            "prompt": "检查修改的文档: $FILE_PATH\n\n如果文件是 questions.md 且所有问题都标记✅，提示: \"问题清单100%完成，建议运行 /sync-docs\"\n\n如果文件是 docs/ 或 development/ 下的.md文档，快速检查版本号和格式。如有重要问题简要提示。\n\n其他情况: 返回 {\"continue\": true, \"suppressOutput\": true}",
+            "timeout": 15
           }
         ]
       }
@@ -18,6 +45,22 @@
           {
             "type": "command",
             "command": "python d:/Claude/.claude/hooks/session_start.py"
+          },
+          {
+            "type": "prompt",
+            "prompt": "请读取并遵循以下系统提示：\n1. .claude/system-prompts/natural-language-system.md - 自然语言交互指导\n2. .claude/system-prompts/skill-usage-rules.md - Skill使用规则（强制）\n3. .claude/system-prompts/skill-reminder.md - Skill使用提醒",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PermissionRequest": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python d:/Claude/.claude/hooks/permission-request/smart-permission-controller.py"
           }
         ]
       }

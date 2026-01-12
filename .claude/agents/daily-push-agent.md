@@ -134,7 +134,7 @@ Commit信息:
 
 文件列表:
   - 新增: .claude/agents/daily-push-agent.md
-  - 修改: development/issues/game-submission-questions-v2.md
+  - 修改: development/active/issues/game-submission-questions-v2.md
   - 删除: temp/old-file.md
 
 推送状态:
@@ -445,7 +445,7 @@ development/logs/daily-push/
 
 ### 修改文件 (12个)
 
-- [`development/issues/game-submission-questions-v2.md`](development/issues/game-submission-questions-v2.md)
+- [`development/active/issues/game-submission-questions-v2.md`](development/active/issues/game-submission-questions-v2.md)
   - 更新Q7-Q9状态
 
 - [`.claude/agents/ai-task-planner-agent.md`](.claude/agents/ai-task-planner-agent.md)

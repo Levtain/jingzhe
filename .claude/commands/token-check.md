@@ -132,9 +132,9 @@ allowed-tools: Read, Bash
 
 ✅ **当前对话已完成**:
 1. 开发清单: development/自动化工具开发清单_2025-01-06.md
-2. 文件夹结构: development/automation-tools/
+2. 文件夹结构: development/active/automation-tools/
 3. Command: /discuss, /sync-docs
-4. 报告: development/analysis/自动化工具开发完成报告_2025-01-06.md
+4. 报告: development/active/analysis/自动化工具开发完成报告_2025-01-06.md
 
 📌 **下次对话继续时**:
 
@@ -142,7 +142,7 @@ allowed-tools: Read, Bash
 ```
 读取以下文件了解当前状态:
 1. development/自动化工具开发清单_2025-01-06.md
-2. development/analysis/自动化工具开发完成报告_2025-01-06.md
+2. development/active/analysis/自动化工具开发完成报告_2025-01-06.md
 3. docs/product/CHANGELOG.md (查看v1.3)
 
 确认: 当前进度=优先级1已完成2个Command
