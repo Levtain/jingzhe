@@ -65,6 +65,28 @@ def should_skip_file(file_path):
             return True
     return False
 
+def is_only_hook_config_change(status):
+    """检查是否只是Hook配置文件被修改"""
+    lines = status.split('\n')
+    hook_config_files = [
+        'settings.json',
+        'settings.local.json',
+        '.claude/settings.json',
+        '.claude/settings.local.json',
+    ]
+
+    for line in lines:
+        if not line:
+            continue
+        file_path = line.split()[1] if len(line.split()) > 1 else ""
+
+        # 如果有非Hook配置文件的改动，返回False
+        is_hook_config = any(f in file_path for f in hook_config_files)
+        if not is_hook_config:
+            return False
+
+    return True
+
 def generate_commit_message(changes):
     """生成提交信息"""
     now = datetime.now()
@@ -151,6 +173,14 @@ def auto_commit():
             "continue": True,
             "suppressOutput": False,
             "message": f"⚠️ Git状态检查失败: {status}"
+        }
+
+    # 检查是否只是Hook配置文件被修改(如果是则跳过)
+    if is_only_hook_config_change(status):
+        return {
+            "continue": True,
+            "suppressOutput": True,
+            "message": "ℹ️ 仅Hook配置改动，跳过自动提交"
         }
 
     # 生成提交信息
