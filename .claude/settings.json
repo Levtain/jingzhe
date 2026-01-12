@@ -64,6 +64,18 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python d:/Claude/.claude/hooks/session-end/auto-git-commit.py",
+            "timeout": 120
+          }
+        ]
+      }
     ]
   }
 }
